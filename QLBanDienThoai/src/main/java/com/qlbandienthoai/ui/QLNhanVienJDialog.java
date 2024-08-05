@@ -26,7 +26,8 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     public QLNhanVienJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.init();
+        init();
+      
     }
 
     QLNhanVienJDialog() {
@@ -76,6 +77,8 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         rdoNam = new javax.swing.JRadioButton();
         rdoNhanVien = new javax.swing.JRadioButton();
         rdoQuanLy = new javax.swing.JRadioButton();
+        txtMatKhau = new javax.swing.JPasswordField();
+        txtXacNhanMatKhau = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         btnDangXuat = new javax.swing.JButton();
@@ -250,13 +253,15 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMaNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtMaNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                     .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHoTen, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                     .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel58, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMatKhau)
+                    .addComponent(txtXacNhanMatKhau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -341,12 +346,16 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
                             .addComponent(jLabel57)
                             .addComponent(jLabel61))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdoNhanVien)
-                        .addGap(14, 14, 14)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel58)
-                            .addComponent(rdoQuanLy))
-                        .addGap(30, 30, 30))
+                            .addComponent(rdoNhanVien)
+                            .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(rdoQuanLy)
+                            .addComponent(jLabel58))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtXacNhanMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(85, 85, 85)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -771,7 +780,9 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtHoTen;
     private javax.swing.JTextField txtMaNhanVien;
+    private javax.swing.JPasswordField txtMatKhau;
     private javax.swing.JTextField txtTimKiem;
+    private javax.swing.JPasswordField txtXacNhanMatKhau;
     // End of variables declaration//GEN-END:variables
 
     NhanVienDAO dao = new NhanVienDAO();
@@ -779,6 +790,7 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     void init(){
         setLocationRelativeTo(null); // đưa cửa sổ ra giữa màn hình
         this.fillTable(); // đổ dữ liệu nhân viên vào bảng
+        this.row = -1;
         this.updateStatus(); // cập nhật trạng thái form
     }
     void fillTable() {
@@ -804,40 +816,40 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     }
     void insert(){
         NhanVien nv = this.getForm();
-//        String xnmk = new String(txtXacNhanMatKhau.getPassword());
-//        String xnmk = new String(txtXacNhanMatKhau.getText());
-//        if(!xnmk.equals(nv.getMatKhau())){
-//            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
-//        }
-//        else{
-//            try {
-//                dao.insert(nv); // thêm mới
-//                this.fillTable(); // đỗ lại bảng
-//                this.clearForm(); // xóa trắng form
-//                MsgBox.alert(this, "Thêm mới thành công!");
-//            } 
-//            catch (Exception e) {
-//                MsgBox.alert(this, "Thêm mới thất bại!");
-//            }
-//        }
+        String xnmk = new String(txtXacNhanMatKhau.getPassword());
+        
+        if(!xnmk.equals(nv.getMatKhau())){
+            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
+        }
+        else{
+            try {
+                dao.insert(nv); // thêm mới
+                this.fillTable(); // đỗ lại bảng
+                this.clearForm(); // xóa trắng form
+                MsgBox.alert(this, "Thêm mới thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Thêm mới thất bại!");
+            }
+        }
     }
     void update(){
         NhanVien nv = this.getForm();
-//        String xnmk = new String(txtXacNhanMatKhau.getPassword());
-//        String xnmk = new String(txtXacNhanMatKhau.getText());
-//        if(!xnmk.equals(nv.getMatKhau())){
-//            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
-//        }
-//        else{
-//            try {
-//                dao.update(nv); // cập nhật
-//                this.fillTable(); // đổ lại bảng
-//                MsgBox.alert(this, "Cập nhật thành công!");
-//            } 
-//            catch (Exception e) {
-//                MsgBox.alert(this, "Cập nhật thất bại!");
-//            }
-//        }
+        String xnmk = new String(txtXacNhanMatKhau.getPassword());
+ 
+        if(!xnmk.equals(nv.getMatKhau())){
+            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
+        }
+        else{
+            try {
+                dao.update(nv); // cập nhật
+                this.fillTable(); // đổ lại bảng
+                MsgBox.alert(this, "Cập nhật thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Cập nhật thất bại!");
+            }
+        }
     }
     void delete(){
         if(!Auth.isManager()){
@@ -932,8 +944,8 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     private void setForm(NhanVien nv) {
         txtMaNhanVien.setText(nv.getMaNhanVien());
         txtHoTen.setText(nv.getHoTen());
-//        txtMatKhau.setText(nv.getMatKhau());
-//        txtXacNhanMatKhau.setText(nv.getXacNhanMatKhau());
+        txtMatKhau.setText(nv.getMatKhau());
+        txtXacNhanMatKhau.setText(nv.getXacNhanMatKhau());
         txtEmail.setText(nv.getEmail());
         rdoNam.setSelected(nv.getGioiTinh());
         rdoNu.setSelected(!nv.getGioiTinh());
