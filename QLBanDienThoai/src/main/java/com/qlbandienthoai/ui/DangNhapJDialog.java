@@ -15,7 +15,7 @@ import javax.swing.JDialog;
  * @author ADMIN
  */
 public class DangNhapJDialog extends JDialog {
-    GiaoDienChinhJDialog gd = new GiaoDienChinhJDialog();
+    
     /**
      * Creates new form DangNhapJDialog
      */
@@ -23,6 +23,10 @@ public class DangNhapJDialog extends JDialog {
         super(parent, modal);
         initComponents();
          init();
+    }
+
+    DangNhapJDialog() {
+        initComponents();
     }
 
    
@@ -189,9 +193,6 @@ public class DangNhapJDialog extends JDialog {
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
         this.dangNhap();
-        
-
-        
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
@@ -278,7 +279,7 @@ public class DangNhapJDialog extends JDialog {
         else{
             
             Auth.user = nhanVien;
-            gd.setVisible(true);
+           
             this.dispose();
             
         }
