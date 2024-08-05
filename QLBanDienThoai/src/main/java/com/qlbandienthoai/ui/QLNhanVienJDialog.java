@@ -621,10 +621,40 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
 
     private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
         // TODO add your handling code here:
-        if(evt.getClickCount() == 2){
-            tblNhanVien.getSelectedRow();
-            this.edit();
-        }
+        int viTri = tblNhanVien.getSelectedRow();
+        txtMaNhanVien.setText(tblNhanVien.getValueAt(viTri, 0).toString());
+        txtHoTen.setText(tblNhanVien.getValueAt(viTri, 1).toString());
+        txtMatKhau.setText(tblNhanVien.getValueAt(viTri, 2).toString());
+        txtXacNhanMatKhau.setText(tblNhanVien.getValueAt(viTri, 2).toString());
+        txtEmail.setText(tblNhanVien.getValueAt(viTri, 3).toString());
+        
+        // Chuyển đổi giá trị giới tính và vai trò thành chuỗi và so sánh trực tiếp
+            String gioiTinh = tblNhanVien.getValueAt(viTri, 4).toString();
+            if ("1".equals(gioiTinh)) {
+                rdoNam.setSelected(true);
+                rdoNu.setSelected(false);
+            } else if ("0".equals(gioiTinh)) {
+                rdoNam.setSelected(false);
+                rdoNu.setSelected(true);
+            }
+
+            String vaiTro = tblNhanVien.getValueAt(viTri, 5).toString();
+            if ("1".equals(vaiTro)) {
+                rdoNhanVien.setSelected(true);
+                rdoQuanLy.setSelected(false);
+            } else if ("0".equals(vaiTro)) {
+                rdoNhanVien.setSelected(false);
+                rdoQuanLy.setSelected(true);
+            }
+
+
+
+
+           
+//        if(evt.getClickCount() == 2){
+//            this.row = tblNhanVien.getSelectedRow();
+//            this.edit();
+//        }
     }//GEN-LAST:event_tblNhanVienMouseClicked
 
     private void btnTrangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrangChuActionPerformed
@@ -919,25 +949,25 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         boolean first = (this.row == 0);
         boolean last = (this.row == tblNhanVien.getRowCount() - 1);
         // Trạng thái form
-        txtMaNhanVien.setEditable(!edit);
-        btnThem.setEnabled(!edit);
-        btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);
-        
-        // Trạng thái điều hướng
-        btnFirst.setEnabled(edit && !first);
-        btnPrev.setEnabled(edit && !first);
-        btnNext.setEnabled(edit && !last);
-        btnLast.setEnabled(edit && !last);
+//        txtMaNhanVien.setEditable(!edit);
+//        btnThem.setEnabled(!edit);
+//        btnSua.setEnabled(!edit);
+//        btnXoa.setEnabled(!edit);
+//        
+//        // Trạng thái điều hướng
+//        btnFirst.setEnabled(!edit && !first);
+//        btnPrev.setEnabled(!edit && !first);
+//        btnNext.setEnabled(!edit && !last);
+//        btnLast.setEnabled(!edit && !last);
     }
 
     private NhanVien getForm() {
         NhanVien nv = new NhanVien();
         nv.setMaNhanVien(txtMaNhanVien.getText());
         nv.setHoTen(txtHoTen.getText());
-//        nv.setMatKhau(new String(txtMatKhau.getPassword()));
-//        nv.setMatKhau(new String(txtMatKhau.getText()));
-//        nv.setVaiTro(rdoTruongPhong.isSelected());
+        nv.setMatKhau(new String(txtMatKhau.getPassword()));
+      
+        nv.setVaiTro(rdoQuanLy.isSelected());
         return nv;
     }
 

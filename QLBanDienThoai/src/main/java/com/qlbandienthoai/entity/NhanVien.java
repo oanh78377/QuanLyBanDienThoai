@@ -10,6 +10,10 @@ package com.qlbandienthoai.entity;
  */
 public class NhanVien {
 
+    public static NhanVien get(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     private String maNhanVien;
     private String hoTen;
     private String matKhau;
