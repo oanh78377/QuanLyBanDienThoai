@@ -4,6 +4,13 @@
  */
 package com.qlbandienthoai.ui;
 
+import com.qlbandienthoai.DAO.SanPhamDAO;
+//import com.qlbandienthoai.entity.KhachHang;
+import com.qlbandienthoai.entity.SanPham;
+import com.qlbandienthoai.utils.MsgBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -16,8 +23,9 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
     public QLSanPhamJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.fillTable();
     }
-
+    
     QLSanPhamJDialog() {
         initComponents();
     }
@@ -595,9 +603,9 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
         // TODO add your handling code here:
         QLSanPhamJDialog.this.dispose();
-         DangNhapJDialog dn = new DangNhapJDialog();
+        DangNhapJDialog dn = new DangNhapJDialog();
         dn.setVisible(true);
-        
+
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
     /**
@@ -693,4 +701,98 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
+SanPhamDAO dao = new SanPhamDAO();
+    int row = -1;
+
+    void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel(); // Assuming tableSanPham is the JTable for displaying products
+        model.setRowCount(0); // Clear existing rows
+
+        try {
+            SanPhamDAO sanPhamDAO = new SanPhamDAO(); // Instantiate SanPhamDAO
+            List<SanPham> list = sanPhamDAO.selectAll(); // Get all products
+
+            for (SanPham sp : list) {
+                // Create a row with product data
+                Object[] row = {
+                    sp.getCode(), // Product Code
+                    sp.getName(), // Product Name
+                    sp.getNameType(), // Brand Name
+                    sp.getNote(),
+                    sp.getQuatity(), // Quantity
+                    sp.getPrice() // Price
+                };
+
+                // Add the row to the table model
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!"); // Show error message
+        }
+    }
+
+    void insert() {
+        SanPham model = getForm();
+        try {
+            dao.insert(model);
+            this.fillTable();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void mappingData() {
+        int selectedRow = this.jTable1.getSelectedRow();
+        
+        if (selectedRow >= 0) { // Ensure a row is selected
+            // Map each column to the respective text field or data type
+            this.jTextField1.setText(this.jTable1.getValueAt(selectedRow, 0).toString());
+            this.jTextField2.setText(this.jTable1.getValueAt(selectedRow, 1).toString());
+            this.jTextField4.setText(this.jTable1.getValueAt(selectedRow, 2).toString());
+            this.jTextPane1.setText(this.jTable1.getValueAt(selectedRow, 3).toString());
+            // Convert the quantity to an integer and set it
+            try {
+                int quantity = Integer.parseInt(this.jTable1.getValueAt(selectedRow, 4).toString());
+                this.jTextField5.setText(String.valueOf(quantity));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                MsgBox.alert(this, "Lỗi dữ liệu số lượng!"); // Handle parsing error
+            }
+            try {
+                int price = Integer.parseInt(this.jTable1.getValueAt(selectedRow, 5).toString());
+                this.jTextField6.setText(String.valueOf(price));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                MsgBox.alert(this, "Lỗi dữ liệu số lượng!"); // Handle parsing error
+            }
+            // If `txtQuantity` is a `JTextField`, you need to use `setText()` as it is a `String`
+        } else {
+            MsgBox.alert(this, "Vui lòng chọn một sản phẩm để chỉnh sửa!");
+        }
+    }
+
+    public SanPham getForm() {
+        SanPham sp = new SanPham();
+        sp.setCode(this.jTextField1.getText());
+        sp.setName(this.jTextField2.getText());
+        sp.setNameType(this.jTextField4.getText());
+        sp.setNote(this.jTextPane1.getText());
+        
+        try {
+            sp.setQuatity(Integer.parseInt(this.jTextField5.getText()));
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Số lượng không hợp lệ");
+        }
+        
+        try {
+            sp.setPrice(Integer.parseInt(this.jTextField6.getText()));
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Giá không hợp lệ");
+        }
+        sp.setImage(this.jLabel1.getText());
+        return sp;
+    }
+    
 }
