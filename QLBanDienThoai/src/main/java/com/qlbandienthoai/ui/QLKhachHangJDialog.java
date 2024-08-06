@@ -127,6 +127,11 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                 "Mã khách hàng", "Tên khách hàng", "SĐT", "Địa chỉ", "Giới tính", "Ngày sinh", "Số lần mua"
             }
         ));
+        tableKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableKhachHangMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableKhachHang);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -314,12 +319,22 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         btnNew.setForeground(new java.awt.Color(255, 255, 255));
         btnNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add-document.png"))); // NOI18N
         btnNew.setText("Mới");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
 
         btnAdd.setBackground(new java.awt.Color(0, 0, 102));
         btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add (2).png"))); // NOI18N
         btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -586,19 +601,24 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-this.insert();        // TODO add your handling code here:
+        // TODO add your handling code here:
+        this.insert();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-this.delete();        // TODO add your handling code here:
+        // TODO add your handling code here:
+//        this.delete();
+ this.clear();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void tableKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableKhachHangMouseClicked
-this.mappingData();        // TODO add your handling code here:
+      // TODO add your handling code here:
+      this.mappingData();
     }//GEN-LAST:event_tableKhachHangMouseClicked
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-this.clear();        // TODO add your handling code here:
+        // TODO add your handling code here:
+      
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnTrangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrangChuActionPerformed
@@ -771,7 +791,7 @@ this.clear();        // TODO add your handling code here:
     }
  private void setForm(KhachHang kh) {
        this.txtCode.setText(kh.getCode());
-        this.txtCode.setText(kh.getName());
+        this.txtName.setText(kh.getName());
         this.txtPhone.setText(kh.getPhone());
         this.tpAdress.setText(kh.getAdress());
        int gender = -1;
@@ -835,7 +855,7 @@ void delete(){
   public KhachHang getForm() {
     KhachHang kh = new KhachHang() ;
         kh.setCode(this.txtCode.getText());
-        kh.setName(this.txtCode.getText());
+        kh.setName(this.txtName.getText());
         kh.setPhone(this.txtPhone.getText());
         kh.setAdress(this.tpAdress.getText());
         int gender = -1;
@@ -854,7 +874,7 @@ void delete(){
 
   public void clear() {
         this.txtCode.setText("");
-        this.txtCode.setText("");
+        this.txtName.setText("");
         this.txtPhone.setText("");
         this.tpAdress.setText("");
         this.ckMale.setSelected(false);
@@ -869,7 +889,7 @@ void delete(){
     // Ensure a row is selected
         // Retrieve and set data from the selected row
         this.txtCode.setText(this.tableKhachHang.getValueAt(selectedRow, 0).toString());
-        this.txtCode.setText(this.tableKhachHang.getValueAt(selectedRow, 1).toString());
+        this.txtName.setText(this.tableKhachHang.getValueAt(selectedRow, 1).toString());
         this.txtPhone.setText(this.tableKhachHang.getValueAt(selectedRow, 2).toString());
         this.tpAdress.setText(this.tableKhachHang.getValueAt(selectedRow, 3).toString());
 
