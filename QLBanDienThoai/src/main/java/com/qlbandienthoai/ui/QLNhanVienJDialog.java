@@ -627,25 +627,48 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         txtMatKhau.setText(tblNhanVien.getValueAt(viTri, 2).toString());
         txtXacNhanMatKhau.setText(tblNhanVien.getValueAt(viTri, 2).toString());
         txtEmail.setText(tblNhanVien.getValueAt(viTri, 3).toString());
+         int gender = Integer.parseInt(this.tblNhanVien.getValueAt(viTri, 4).toString());
+        if (gender == 0) {
+            this.rdoNam.setSelected(true);
+            this.rdoNu.setSelected(false);
+        } else if (gender == 1) {
+            this.rdoNam.setSelected(false);
+            this.rdoNu.setSelected(true);
+        }
+        
+        int vaiTro = Integer.parseInt(this.tblNhanVien.getValueAt(viTri, 5).toString());
+        if (vaiTro == 0) {
+            this.rdoQuanLy.setSelected(true);
+            this.rdoNhanVien.setSelected(false);
+        } else if (gender == 1) {
+            this.rdoQuanLy.setSelected(false);
+            this.rdoNhanVien.setSelected(true);
+        }
+        
+        
+        
+        
+        
+        
         
         // Chuyển đổi giá trị giới tính và vai trò thành chuỗi và so sánh trực tiếp
-            String gioiTinh = tblNhanVien.getValueAt(viTri, 4).toString();
-            if ("1".equals(gioiTinh)) {
-                rdoNam.setSelected(true);
-                rdoNu.setSelected(false);
-            } else if ("0".equals(gioiTinh)) {
-                rdoNam.setSelected(false);
-                rdoNu.setSelected(true);
-            }
-
-            String vaiTro = tblNhanVien.getValueAt(viTri, 5).toString();
-            if ("1".equals(vaiTro)) {
-                rdoNhanVien.setSelected(true);
-                rdoQuanLy.setSelected(false);
-            } else if ("0".equals(vaiTro)) {
-                rdoNhanVien.setSelected(false);
-                rdoQuanLy.setSelected(true);
-            }
+//            String gioiTinh = tblNhanVien.getValueAt(viTri, 4).toString();
+//            if ("1".equals(gioiTinh)) {
+//                rdoNam.setSelected(true);
+//                rdoNu.setSelected(false);
+//            } else if ("0".equals(gioiTinh)) {
+//                rdoNam.setSelected(false);
+//                rdoNu.setSelected(true);
+//            }
+//
+//            String vaiTro = tblNhanVien.getValueAt(viTri, 5).toString();
+//            if ("1".equals(vaiTro)) {
+//                rdoNhanVien.setSelected(true);
+//                rdoQuanLy.setSelected(false);
+//            } else if ("0".equals(vaiTro)) {
+//                rdoNhanVien.setSelected(false);
+//                rdoQuanLy.setSelected(true);
+//            }
              
 
 
@@ -835,8 +858,8 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
                     nv.getHoTen(),
                     nv.getMatKhau(),
                     nv.getEmail(),
-                    nv.getGioiTinh()?"Nữ":"Nam",
-                    nv.getVaiTro()?"Nhân viên":"Quản lý"
+                    nv.getGioiTinh(),
+                    nv.getVaiTro()
                 };
                 model.addRow(row);
             }
@@ -881,34 +904,46 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
                 MsgBox.alert(this, "Cập nhật thất bại!");
             }
         }
+       
     }
     void delete(){
-        if(!Auth.isManager()){
-            MsgBox.alert(this, "Bạn không có quyền xóa nhân viên!");
-        }
-        else{
-            String manv = txtMaNhanVien.getText();
-            if(manv.equals(Auth.user.getMaNhanVien())){
-                MsgBox.alert(this, "Bạn không được xóa chính bạn!");
-            }
-            else if(MsgBox.confirm(this, "Bạn thực sự muốn xóa nhân viên này?")){
-                try {
-                    dao.delete(manv);
-                    this.fillTable();
-                    this.clearForm();
-                    MsgBox.alert(this, "Xóa thành công!");
-                } 
-                catch (Exception e) {
-                    MsgBox.alert(this, "Xóa thất bại!");
-                }
-            }
-        }
+//        if(!Auth.isManager()){
+//            MsgBox.alert(this, "Bạn không có quyền xóa nhân viên!");
+//        }
+//        else{
+//            String manv = txtMaNhanVien.getText();
+//            if(manv.equals(Auth.user.getMaNhanVien())){
+//                MsgBox.alert(this, "Bạn không được xóa chính bạn!");
+//            }
+//            else if(MsgBox.confirm(this, "Bạn thực sự muốn xóa nhân viên này?")){
+//                try {
+//                    dao.delete(manv);
+//                    this.fillTable();
+//                    this.clearForm();
+//                    MsgBox.alert(this, "Xóa thành công!");
+//                } 
+//                catch (Exception e) {
+//                    MsgBox.alert(this, "Xóa thất bại!");
+//                }
+//            }
+//        }
     }
     private void clearForm() {
-        NhanVien nv = new NhanVien();
-        this.setForm(nv);
-        this.row = -1;
-        this.updateStatus();
+//        NhanVien nv = new NhanVien();
+//        this.setForm(nv);
+//        this.row = -1;
+//        this.updateStatus();
+
+    txtMaNhanVien.setText("");
+    txtHoTen.setText("");
+    txtMatKhau.setText("");
+    txtXacNhanMatKhau.setText("");
+    txtEmail.setText("");
+    rdoNam.setSelected(false);
+    rdoNu.setSelected(false);
+    rdoNhanVien.setSelected(false);
+    rdoQuanLy.setSelected(false);
+    this.fillTable();
     }
 
  
@@ -943,13 +978,14 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         this.setForm(nv);
 //        tabs.setSelectedIndex(0);
 
-        this.updateStatus();
+//        this.updateStatus();
+
     }
 
     private void updateStatus() {
-        boolean edit = (this.row >= 0);
-        boolean first = (this.row == 0);
-        boolean last = (this.row == tblNhanVien.getRowCount() - 1);
+//        boolean edit = (this.row >= 0);
+//        boolean first = (this.row == 0);
+//        boolean last = (this.row == tblNhanVien.getRowCount() - 1);
         // Trạng thái form
 //        txtMaNhanVien.setEditable(!edit);
 //        btnThem.setEnabled(!edit);
@@ -968,8 +1004,22 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         nv.setMaNhanVien(txtMaNhanVien.getText());
         nv.setHoTen(txtHoTen.getText());
         nv.setMatKhau(new String(txtMatKhau.getPassword()));
-        
-        nv.setVaiTro(rdoQuanLy.isSelected());
+//        nv.setXacNhanMatKhau(new String(txtXacNhanMatKhau.getPassword()));
+         int gender = -1;
+    if (this.rdoNam.isSelected()) {
+        gender = 0;
+    } else if (this.rdoNu.isSelected()) {
+        gender = 1;
+    }
+    
+    int vaiTro = -1;
+    if (this.rdoQuanLy.isSelected()) {
+        vaiTro = 0;
+    } else if (this.rdoNhanVien.isSelected()) {
+        vaiTro = 1;
+    }
+
+//        nv.setVaiTro(rdoQuanLy.isSelected());
         return nv;
     }
 
@@ -977,14 +1027,29 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         txtMaNhanVien.setText(nv.getMaNhanVien());
         txtHoTen.setText(nv.getHoTen());
         txtMatKhau.setText(nv.getMatKhau());
-        txtXacNhanMatKhau.setText(nv.getXacNhanMatKhau());
+        txtXacNhanMatKhau.setText(nv.getMatKhau());
         txtEmail.setText(nv.getEmail());
-        rdoNam.setSelected(nv.getGioiTinh());
-        rdoNu.setSelected(!nv.getGioiTinh());
-        rdoQuanLy.setSelected(nv.getVaiTro());
-        rdoNhanVien.setSelected(!nv.getVaiTro());
+        int gender = -1;
+            if (this.rdoNam.isSelected()) {
+                gender = 1;
+            }
+            if (this.rdoNu.isSelected()) {
+                gender = 0;
+            }
+            int vaiTro = -1;
+            if (this.rdoQuanLy.isSelected()) {
+                vaiTro = 1;
+            }
+            if (this.rdoNhanVien.isSelected()) {
+                vaiTro = 0;
+            }
+//        rdoNam.setSelected(nv.getGioiTinh());
+//        rdoNu.setSelected(!nv.getGioiTinh());
+//        rdoQuanLy.setSelected(nv.getVaiTro());
+//        rdoNhanVien.setSelected(!nv.getVaiTro());
         
         
+
 //        txtMaNhanVien.setText("");
 //    txtHoTen.setText("");
 //    txtMatKhau.setText("");

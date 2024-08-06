@@ -17,10 +17,9 @@ public class NhanVien {
     private String maNhanVien;
     private String hoTen;
     private String matKhau;
-    private String xacNhanMatKhau;
     private String email;
-    private boolean gioiTinh = false;
-    private boolean vaiTro = false;
+    private int gioiTinh;
+    private int vaiTro;
 
     @Override
     public String toString() {
@@ -59,28 +58,24 @@ public class NhanVien {
         this.email = email;
     }
 
-    public boolean getGioiTinh() {
+    public int getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(boolean gioiTinh) {
+    public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
 
-    public boolean getVaiTro() {
+    public int getVaiTro() {
         return vaiTro;
     }
 
-    public void setVaiTro(boolean vaiTro) {
+    public void setVaiTro(int vaiTro) {
         this.vaiTro = vaiTro;
     }
 
-    public String getXacNhanMatKhau() {
-       return xacNhanMatKhau;
-    }
 
     
 
-    
-    
+  
 }

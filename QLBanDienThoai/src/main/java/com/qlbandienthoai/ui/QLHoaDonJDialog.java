@@ -943,21 +943,21 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
     }
 
     void delete(){
-        if(!Auth.isManager()){
-           MsgBox.alert(this, "Bạn không có quyền xóa người học!");
-        }
-        else if(MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?")){
-            String mahd = txtmahoadon.getText();
-            try {
-                dao.delete(mahd);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Xóa thành công!");
-            } 
-            catch (Exception e) {
-                MsgBox.alert(this, "Xóa thất bại!");
-            }            
-        }       
+//        if(!Auth.isManager()){
+//           MsgBox.alert(this, "Bạn không có quyền xóa người học!");
+//        }
+//        else if(MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?")){
+//            String mahd = txtmahoadon.getText();
+//            try {
+//                dao.delete(mahd);
+//                this.fillTable();
+//                this.clearForm();
+//                MsgBox.alert(this, "Xóa thành công!");
+//            } 
+//            catch (Exception e) {
+//                MsgBox.alert(this, "Xóa thất bại!");
+//            }            
+//        }       
     }
 
     void clearForm(){

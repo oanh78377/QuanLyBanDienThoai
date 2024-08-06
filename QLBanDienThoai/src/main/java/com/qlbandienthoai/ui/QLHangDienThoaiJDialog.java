@@ -783,23 +783,23 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
         }
     }
     void delete(){
-        if(!Auth.isManager()){
-            MsgBox.alert(this, "Bạn không có quyền xóa hãng điện thoại!");
-        }
-        else{
-            if(MsgBox.confirm(this, "Bạn có muốn xóa hay không?")){
-                String mahdt = txtMaHangDienThoai.getText();
-                try {
-                    dao.delete(mahdt);
-                    this.fillTable();
-                    this.clearForm();
-                    MsgBox.alert(this, "Xóa thành công!");
-                } 
-                catch (Exception e) {
-                    MsgBox.alert(this, "Xóa thất bại!");
-                }
-            }
-        }
+//        if(!Auth.isManager()){
+//            MsgBox.alert(this, "Bạn không có quyền xóa hãng điện thoại!");
+//        }
+//        else{
+//            if(MsgBox.confirm(this, "Bạn có muốn xóa hay không?")){
+//                String mahdt = txtMaHangDienThoai.getText();
+//                try {
+//                    dao.delete(mahdt);
+//                    this.fillTable();
+//                    this.clearForm();
+//                    MsgBox.alert(this, "Xóa thành công!");
+//                } 
+//                catch (Exception e) {
+//                    MsgBox.alert(this, "Xóa thất bại!");
+//                }
+//            }
+//        }
     }
     private void clearForm() {
         HangDienThoai nv = new HangDienThoai();

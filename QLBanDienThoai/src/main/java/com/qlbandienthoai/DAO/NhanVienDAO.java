@@ -21,7 +21,7 @@ public class NhanVienDAO extends EduSysDAO<NhanVien, String>{
 
     
     public void insert(NhanVien model) {
-        String sql="INSERT INTO NHANVIEN (MaNhanVien, HoTen, MatKhau, Email, GioiTinh, VaiTro) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql="INSERT INTO NhanVien (MaNhanVien, HoTen, MatKhau, Email, GioiTinh, VaiTro) VALUES (?, ?, ?, ?, ?, ?)";
         XJdbc.update(sql, 
                 model.getMaNhanVien(), 
                 model.getHoTen(), 
@@ -33,7 +33,7 @@ public class NhanVienDAO extends EduSysDAO<NhanVien, String>{
 
     
     public void update(NhanVien model) {
-        String sql="UPDATE NHANVIEN SET HoTen=?, MatKhau=?, Email=?, GioiTinh=?, VaiTro=? WHERE MaNhanVien=?";
+        String sql="UPDATE NhanVien SET HoTen=?, MatKhau=?, Email=?, GioiTinh=?, VaiTro=? WHERE MaNhanVien=?";
         XJdbc.update(sql, 
                 model.getHoTen(),
                 model.getMatKhau(),
@@ -76,8 +76,8 @@ public class NhanVienDAO extends EduSysDAO<NhanVien, String>{
                     entity.setHoTen(rs.getString("HoTen"));
                     entity.setMatKhau(rs.getString("MatKhau"));
                     entity.setEmail(rs.getString("Email"));
-                    entity.setGioiTinh(rs.getBoolean("GioiTinh"));
-                    entity.setVaiTro(rs.getBoolean("VaiTro"));
+                    entity.setGioiTinh(rs.getInt("GioiTinh"));
+                    entity.setVaiTro(rs.getInt("VaiTro"));
                     list.add(entity);
                 }
             } 
