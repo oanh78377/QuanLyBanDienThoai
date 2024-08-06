@@ -313,6 +313,11 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/delete (1).png"))); // NOI18N
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnNew.setBackground(new java.awt.Color(0, 0, 102));
         btnNew.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -605,21 +610,10 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         this.insert();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-//        this.delete();
- this.clear();
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void tableKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableKhachHangMouseClicked
       // TODO add your handling code here:
       this.mappingData();
     }//GEN-LAST:event_tableKhachHangMouseClicked
-
-    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        // TODO add your handling code here:
-      
-    }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnTrangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrangChuActionPerformed
         // TODO add your handling code here:
@@ -684,6 +678,16 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         dn.setVisible(true);
        
     }//GEN-LAST:event_btnDangXuatActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        // TODO add your handling code here:
+        this.clear();
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        this.delete();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -838,7 +842,7 @@ void fillTable() {
         catch (Exception e) {
             MsgBox.alert(this, "Thêm mới thất bại!");
         }
- }
+}
 void delete(){
     MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?");
             String manh = this.txtCode.getText();
