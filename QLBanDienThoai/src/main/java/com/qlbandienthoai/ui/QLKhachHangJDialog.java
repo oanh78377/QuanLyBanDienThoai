@@ -4,11 +4,21 @@
  */
 package com.qlbandienthoai.ui;
 
+import com.qlbandienthoai.DAO.KhachHangDAO;
+import com.qlbandienthoai.entity.KhachHang;
+import com.qlbandienthoai.utils.MsgBox;
+import com.qlbandienthoai.utils.XDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
  */
 public class QLKhachHangJDialog extends javax.swing.JDialog {
+ private static List<KhachHang> KhachHangs = new ArrayList<>();
 
     /**
      * Creates new form KhachHangJDialog
@@ -16,6 +26,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     public QLKhachHangJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.fillTable();
     }
 
     QLKhachHangJDialog() {
@@ -41,32 +52,32 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableKhachHang = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtCode = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtBirth = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtNumber = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        ckMale = new javax.swing.JRadioButton();
+        ckfeMale = new javax.swing.JRadioButton();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        tpAdress = new javax.swing.JTextPane();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         btnDoiMatKhau = new javax.swing.JButton();
         btnNhanVien = new javax.swing.JButton();
@@ -105,7 +116,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/Search.png"))); // NOI18N
         jButton1.setText("Tìm kiếm");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -116,7 +127,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                 "Mã khách hàng", "Tên khách hàng", "SĐT", "Địa chỉ", "Giới tính", "Ngày sinh", "Số lần mua"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableKhachHang);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -156,49 +167,49 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jLabel7.setForeground(new java.awt.Color(0, 0, 102));
         jLabel7.setText("Mã khách hàng");
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtCode.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 102));
         jLabel8.setText("Tên khách hàng");
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 102));
         jLabel9.setText("SĐT");
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPhone.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 102));
         jLabel10.setText("Ngày sinh");
 
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtBirth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 102));
         jLabel11.setText("Số lần mua");
 
-        jTextField6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNumber.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 102));
         jLabel12.setText("Giới tính");
 
-        jRadioButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jRadioButton1.setForeground(new java.awt.Color(0, 0, 102));
-        jRadioButton1.setText("Nam");
+        ckMale.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ckMale.setForeground(new java.awt.Color(0, 0, 102));
+        ckMale.setText("Nam");
 
-        jRadioButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jRadioButton2.setForeground(new java.awt.Color(0, 0, 102));
-        jRadioButton2.setText("Nữ");
+        ckfeMale.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ckfeMale.setForeground(new java.awt.Color(0, 0, 102));
+        ckfeMale.setText("Nữ");
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 102));
         jLabel13.setText("Địa chỉ");
 
-        jScrollPane2.setViewportView(jTextPane1);
+        jScrollPane2.setViewportView(tpAdress);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -208,23 +219,23 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(txtCode, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField3)
+                    .addComponent(txtName)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4))
+                    .addComponent(txtPhone))
                 .addGap(69, 69, 69)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jRadioButton1)
+                            .addComponent(ckMale)
                             .addComponent(jLabel12))
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton2)))
+                        .addComponent(ckfeMale)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
@@ -243,25 +254,25 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton2)))
+                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ckMale)
+                            .addComponent(ckfeMale)))
                     .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -286,29 +297,29 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText(">|");
 
-        jButton6.setBackground(new java.awt.Color(0, 0, 102));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/pen.png"))); // NOI18N
-        jButton6.setText("Sửa");
+        btnEdit.setBackground(new java.awt.Color(0, 0, 102));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/pen.png"))); // NOI18N
+        btnEdit.setText("Sửa");
 
-        jButton7.setBackground(new java.awt.Color(0, 0, 102));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/delete (1).png"))); // NOI18N
-        jButton7.setText("Xóa");
+        btnDelete.setBackground(new java.awt.Color(0, 0, 102));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/delete (1).png"))); // NOI18N
+        btnDelete.setText("Xóa");
 
-        jButton8.setBackground(new java.awt.Color(0, 0, 102));
-        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add-document.png"))); // NOI18N
-        jButton8.setText("Mới");
+        btnNew.setBackground(new java.awt.Color(0, 0, 102));
+        btnNew.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNew.setForeground(new java.awt.Color(255, 255, 255));
+        btnNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add-document.png"))); // NOI18N
+        btnNew.setText("Mới");
 
-        jButton9.setBackground(new java.awt.Color(0, 0, 102));
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add (2).png"))); // NOI18N
-        jButton9.setText("Thêm");
+        btnAdd.setBackground(new java.awt.Color(0, 0, 102));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add (2).png"))); // NOI18N
+        btnAdd.setText("Thêm");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -328,13 +339,13 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5)
                         .addGap(111, 111, 111)
-                        .addComponent(jButton9)
+                        .addComponent(btnAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton6)
+                        .addComponent(btnEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7)
+                        .addComponent(btnDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8)
+                        .addComponent(btnNew)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -351,10 +362,10 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                     .addComponent(jButton3)
                     .addComponent(jButton4)
                     .addComponent(jButton5)
-                    .addComponent(jButton9)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
+                    .addComponent(btnAdd)
+                    .addComponent(btnEdit)
+                    .addComponent(btnDelete)
+                    .addComponent(btnNew))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -575,19 +586,19 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-//this.insert();        // TODO add your handling code here:
+this.insert();        // TODO add your handling code here:
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-//this.delete();        // TODO add your handling code here:
+this.delete();        // TODO add your handling code here:
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void tableKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableKhachHangMouseClicked
-//this.mappingData();        // TODO add your handling code here:
+this.mappingData();        // TODO add your handling code here:
     }//GEN-LAST:event_tableKhachHangMouseClicked
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-//this.clear();        // TODO add your handling code here:
+this.clear();        // TODO add your handling code here:
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnTrangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrangChuActionPerformed
@@ -698,24 +709,26 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDangXuat;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDoiMatKhau;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHangDienThoai;
     private javax.swing.JButton btnHoaDon;
     private javax.swing.JButton btnKhachHang;
+    private javax.swing.JButton btnNew;
     private javax.swing.JButton btnNhanVien;
     private javax.swing.JButton btnSanPham;
     private javax.swing.JButton btnThongKe;
     private javax.swing.JButton btnTrangChu;
+    private javax.swing.JRadioButton ckMale;
+    private javax.swing.JRadioButton ckfeMale;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -733,20 +746,160 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTable tableKhachHang;
+    private javax.swing.JTextPane tpAdress;
+    private javax.swing.JTextField txtBirth;
+    private javax.swing.JTextField txtCode;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtNumber;
+    private javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
+ KhachHangDAO dao = new KhachHangDAO();
+ int row = -1;
+    private void edit() {
+        String manv = (String)this.tableKhachHang.getValueAt(this.row, 0);
+        KhachHang nv = dao.selectById(manv);
+        this.setForm(nv);
+//        tabs.setSelectedIndex(0);
+//        this.updateStatus();
+    }
+ private void setForm(KhachHang kh) {
+       this.txtCode.setText(kh.getCode());
+        this.txtCode.setText(kh.getName());
+        this.txtPhone.setText(kh.getPhone());
+        this.tpAdress.setText(kh.getAdress());
+       int gender = -1;
+            if (this.ckMale.isSelected()) {
+                gender = 0;
+            }
+            if (this.ckfeMale.isSelected()) {
+                gender = 1;
+            }
+this.txtBirth.setText(String.valueOf(kh.getBrith()));
+this.txtNumber.setText(String.valueOf(kh.getNumber()));
+    }
+
+void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) this.tableKhachHang.getModel();
+        model.setRowCount(0);
+        try {
+            List<KhachHang> list = dao.selectAll();
+            for (KhachHang kh : list) {
+                Object[] row = {
+                    kh.getCode(),
+                    kh.getName(),
+                    kh.getPhone(),
+                    kh.getAdress(),
+                    kh.getGender(),
+                    kh.getBrith(),
+                    kh.getNumber()
+                };
+                model.addRow(row);
+            }
+        } 
+        catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+ void insert(){
+        KhachHang model = getForm();
+        try {
+            dao.insert(model);
+            this.fillTable();
+            this.clear();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } 
+        catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+ }
+void delete(){
+    MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?");
+            String manh = this.txtCode.getText();
+            try {
+                dao.delete(manh);
+                this.fillTable();
+             this.clear();
+                MsgBox.alert(this, "Xóa thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }            
+    }
+  public KhachHang getForm() {
+    KhachHang kh = new KhachHang() ;
+        kh.setCode(this.txtCode.getText());
+        kh.setName(this.txtCode.getText());
+        kh.setPhone(this.txtPhone.getText());
+        kh.setAdress(this.tpAdress.getText());
+        int gender = -1;
+    if (this.ckMale.isSelected()) {
+        gender = 0;
+    } else if (this.ckfeMale.isSelected()) {
+        gender = 1;
+    }
+    kh.setGender(gender);
+        kh.setBrith(XDate.toDate(this.txtBirth.getText(), "yyyy-MM-dd"));
+        kh.setNumber(Integer.valueOf(this.txtNumber.getText()));
+        return kh;
+        
+}
+
+
+  public void clear() {
+        this.txtCode.setText("");
+        this.txtCode.setText("");
+        this.txtPhone.setText("");
+        this.tpAdress.setText("");
+        this.ckMale.setSelected(false);
+        this.ckfeMale.setSelected(false);
+        this.txtBirth.setText("");
+        this.txtNumber.setText("");
+        this.fillTable();
+    }
+   public void mappingData() {
+    int selectedRow = this.tableKhachHang.getSelectedRow();
+
+    // Ensure a row is selected
+        // Retrieve and set data from the selected row
+        this.txtCode.setText(this.tableKhachHang.getValueAt(selectedRow, 0).toString());
+        this.txtCode.setText(this.tableKhachHang.getValueAt(selectedRow, 1).toString());
+        this.txtPhone.setText(this.tableKhachHang.getValueAt(selectedRow, 2).toString());
+        this.tpAdress.setText(this.tableKhachHang.getValueAt(selectedRow, 3).toString());
+
+        // Handle gender
+        int gender = Integer.parseInt(this.tableKhachHang.getValueAt(selectedRow, 4).toString());
+        if (gender == 1) {
+            this.ckMale.setSelected(true);
+            this.ckfeMale.setSelected(false);
+        } else if (gender == 0) {
+            this.ckMale.setSelected(false);
+            this.ckfeMale.setSelected(true);
+        }
+              String birthDateStr = this.tableKhachHang.getValueAt(selectedRow, 5).toString();
+        System.out.println("Original birth date string: " + birthDateStr); // Debugging output
+        try {
+            Date birthDate = XDate.toDate(birthDateStr, "yyyy-MM-dd"); // Updated date format
+            String formattedDate = XDate.toString(birthDate, "yyyy-MM-dd"); // Same format for output
+            System.out.println("Formatted birth date: " + formattedDate); // Debugging output
+            this.txtBirth.setText(formattedDate);
+        } catch (RuntimeException e) {
+            System.err.println("Error parsing birth date: " + e.getMessage()); // Debugging output
+            this.txtBirth.setText(""); // Handle exception
+        }
+    String numberStr = this.tableKhachHang.getValueAt(selectedRow, 6).toString();
+
+    try {
+        int number = Integer.parseInt(numberStr);
+        this.txtNumber.setText(String.valueOf(number));
+    } catch (NumberFormatException e) {
+        this.txtNumber.setText("");
+    }
+   }
 }
