@@ -5,6 +5,7 @@
 package com.qlbandienthoai.ui;
 
 import com.qlbandienthoai.DAO.HangDienThoaiDAO;
+import com.qlbandienthoai.DAO.NhanVienDAO;
 import com.qlbandienthoai.entity.HangDienThoai;
 import com.qlbandienthoai.utils.Auth;
 import com.qlbandienthoai.utils.MsgBox;
@@ -198,12 +199,22 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
         jLabel4.setText("Tìm kiếm:");
 
         txtTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
 
         btnTimKiem.setBackground(new java.awt.Color(0, 0, 102));
         btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/search.png"))); // NOI18N
         btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         btnThem.setBackground(new java.awt.Color(0, 0, 102));
         btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -648,6 +659,17 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        this.timKiem();
+//        this.fillTable();
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        // TODO add your handling code here:
+        this.timKiem();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -780,7 +802,9 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
         } 
         catch (Exception e) {
             MsgBox.alert(this, "Cập nhật thất bại!");
-        }
+            e.printStackTrace();  // Log the error to the console for debugging
+}
+
     }
     void delete(){
 //        if(!Auth.isManager()){
@@ -800,6 +824,20 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
 //                }
 //            }
 //        }
+
+
+MsgBox.confirm(this, "Bạn có muốn xóa hay không?");
+                String mahdt = txtMaHangDienThoai.getText();
+                try {
+                    dao.delete(mahdt);
+                    this.fillTable();
+                    this.clearForm();
+                    MsgBox.alert(this, "Xóa thành công!");
+                } 
+                catch (Exception e) {
+                    MsgBox.alert(this, "Xóa thất bại!");
+                }
+            
     }
     private void clearForm() {
         HangDienThoai nv = new HangDienThoai();
@@ -812,15 +850,23 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
 
     void first() {
         this.row = 0;
-//        this.tblHangDienThoai.setRowSelectionInterval(this.row, this.row);
-//        this.setForm(hdt);
         this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        tblHangDienThoai.scrollRectToVisible(tblHangDienThoai.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblHangDienThoai.setRowSelectionInterval(this.row, this.row);
     }
 
     void prev() {
         if(this.row > 0){
             this.row--;
             this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+        tblHangDienThoai.scrollRectToVisible(tblHangDienThoai.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblHangDienThoai.setRowSelectionInterval(this.row, this.row);
         }
     }
 
@@ -828,12 +874,22 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
         if(this.row < tblHangDienThoai.getRowCount() - 1){
             this.row++;
             this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+        tblHangDienThoai.scrollRectToVisible(tblHangDienThoai.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblHangDienThoai.setRowSelectionInterval(this.row, this.row);
         }
     }
 
     void last() {
         this.row = tblHangDienThoai.getRowCount() - 1;
         this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        tblHangDienThoai.scrollRectToVisible(tblHangDienThoai.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblHangDienThoai.setRowSelectionInterval(this.row, this.row);
     }
 
     private void edit() {
@@ -845,20 +901,20 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
     }
 
     private void updateStatus() {
-         boolean edit = (this.row >= 0);
-        boolean first = (this.row == 0);
-        boolean last = (this.row == tblHangDienThoai.getRowCount() - 1);
-        // Trạng thái form
-        txtMaHangDienThoai.setEditable(!edit);
-        btnThem.setEnabled(!edit);
-        btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);
-        
-        // Trạng thái điều hướng
-        btnFirst.setEnabled(edit && !first);
-        btnPrev.setEnabled(edit && !first);
-        btnNext.setEnabled(edit && !last);
-        btnLast.setEnabled(edit && !last);
+//         boolean edit = (this.row >= 0);
+//        boolean first = (this.row == 0);
+//        boolean last = (this.row == tblHangDienThoai.getRowCount() - 1);
+//        // Trạng thái form
+//        txtMaHangDienThoai.setEditable(!edit);
+//        btnThem.setEnabled(!edit);
+//        btnSua.setEnabled(edit);
+//        btnXoa.setEnabled(edit);
+//        
+//        // Trạng thái điều hướng
+//        btnFirst.setEnabled(edit && !first);
+//        btnPrev.setEnabled(edit && !first);
+//        btnNext.setEnabled(edit && !last);
+//        btnLast.setEnabled(edit && !last);
     }
 
     private HangDienThoai getForm() {
@@ -874,5 +930,21 @@ public class QLHangDienThoaiJDialog extends javax.swing.JDialog {
         
     }
 
+
+    
+   private void timKiem(){
+    DefaultTableModel model = (DefaultTableModel) tblHangDienThoai.getModel();
+    model.setRowCount(0); // Clear the table
+
+    String keyword = txtTimKiem.getText(); // Get the search keyword
+    List<HangDienThoai> list = dao.selectByName(keyword); // Assuming you have a method to search by name
+
+    for (HangDienThoai hdt : list) {
+        model.addRow(new Object[]{
+            hdt.getMaHangDienThoai(),
+            hdt.getTenHangDienThoai(),
+        });
+    }
+}
 
 }
