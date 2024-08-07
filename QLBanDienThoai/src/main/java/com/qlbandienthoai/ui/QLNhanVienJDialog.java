@@ -930,6 +930,8 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     }
     private void clearForm() {
 //        NhanVien nv = new NhanVien();
+//        nv.setGioiTinh(-1); // Chỉ định một giá trị không hợp lệ để đảm bảo không có giới tính nào được chọn
+//        nv.setVaiTro(-1);  // Chỉ định một giá trị không hợp lệ để đảm bảo không có vai trò nào được chọn
 //        this.setForm(nv);
 //        this.row = -1;
 //        this.updateStatus();
@@ -951,12 +953,22 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     void first() {
         this.row = 0;
         this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        tblNhanVien.scrollRectToVisible(tblNhanVien.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblNhanVien.setRowSelectionInterval(this.row, this.row);
     }
 
     void prev() {
         if(this.row > 0){
             this.row--;
             this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+        tblNhanVien.scrollRectToVisible(tblNhanVien.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblNhanVien.setRowSelectionInterval(this.row, this.row);
         }
     }
 
@@ -964,12 +976,22 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         if(this.row < tblNhanVien.getRowCount() - 1){
             this.row++;
             this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+        tblNhanVien.scrollRectToVisible(tblNhanVien.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblNhanVien.setRowSelectionInterval(this.row, this.row);
         }
     }
 
     void last() {
         this.row = tblNhanVien.getRowCount() - 1;
         this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        tblNhanVien.scrollRectToVisible(tblNhanVien.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        tblNhanVien.setRowSelectionInterval(this.row, this.row);
     }
 
     private void edit() {
@@ -1029,20 +1051,48 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         txtMatKhau.setText(nv.getMatKhau());
         txtXacNhanMatKhau.setText(nv.getMatKhau());
         txtEmail.setText(nv.getEmail());
-        int gender = -1;
-            if (this.rdoNam.isSelected()) {
-                gender = 1;
-            }
-            if (this.rdoNu.isSelected()) {
-                gender = 0;
-            }
-            int vaiTro = -1;
-            if (this.rdoQuanLy.isSelected()) {
-                vaiTro = 1;
-            }
-            if (this.rdoNhanVien.isSelected()) {
-                vaiTro = 0;
-            }
+        
+        // Cập nhật giới tính
+    if (nv.getGioiTinh() == 0) { // Nam
+        rdoNam.setSelected(true);
+        rdoNu.setSelected(false);
+    } else { // Nữ
+        rdoNam.setSelected(false);
+        rdoNu.setSelected(true);
+   
+    }
+    // Cập nhật vai trò
+    if (nv.getVaiTro() == 0) { // Trưởng phòng
+        rdoQuanLy.setSelected(true);
+        rdoNhanVien.setSelected(false);
+    } else { // Nhân viên
+        rdoQuanLy.setSelected(false);
+        rdoNhanVien.setSelected(true);
+    }
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        int gender = -1;
+//            if (this.rdoNam.isSelected()) {
+//                gender = 1;
+//            }
+//            if (this.rdoNu.isSelected()) {
+//                gender = 0;
+//            }
+//            int vaiTro = -1;
+//            if (this.rdoQuanLy.isSelected()) {
+//                vaiTro = 1;
+//            }
+//            if (this.rdoNhanVien.isSelected()) {
+//                vaiTro = 0;
+//            }
 //        rdoNam.setSelected(nv.getGioiTinh());
 //        rdoNu.setSelected(!nv.getGioiTinh());
 //        rdoQuanLy.setSelected(nv.getVaiTro());
