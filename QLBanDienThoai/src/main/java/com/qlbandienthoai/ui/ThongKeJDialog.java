@@ -5,9 +5,7 @@
 package com.qlbandienthoai.ui;
 
 import com.qlbandienthoai.DAO.HoaDonDAO;
-import com.qlbandienthoai.DAO.SanPhamDAO;
 import com.qlbandienthoai.DAO.ThongKeDAO;
-import com.qlbandienthoai.entity.SanPham;
 import com.qlbandienthoai.utils.MsgBox;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
