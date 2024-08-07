@@ -166,6 +166,11 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         jLabel54.setText("Tìm kiếm:");
 
         txtTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
 
         btnTimKiem.setBackground(new java.awt.Color(0, 0, 102));
         btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -745,6 +750,11 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        // TODO add your handling code here:
+        this.timKiem();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -883,6 +893,7 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
                 MsgBox.alert(this, "Thêm mới thành công!");
             } 
             catch (Exception e) {
+                 e.printStackTrace();
                 MsgBox.alert(this, "Thêm mới thất bại!");
             }
         }
@@ -907,26 +918,17 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
        
     }
     void delete(){
-//        if(!Auth.isManager()){
-//            MsgBox.alert(this, "Bạn không có quyền xóa nhân viên!");
-//        }
-//        else{
-//            String manv = txtMaNhanVien.getText();
-//            if(manv.equals(Auth.user.getMaNhanVien())){
-//                MsgBox.alert(this, "Bạn không được xóa chính bạn!");
-//            }
-//            else if(MsgBox.confirm(this, "Bạn thực sự muốn xóa nhân viên này?")){
-//                try {
-//                    dao.delete(manv);
-//                    this.fillTable();
-//                    this.clearForm();
-//                    MsgBox.alert(this, "Xóa thành công!");
-//                } 
-//                catch (Exception e) {
-//                    MsgBox.alert(this, "Xóa thất bại!");
-//                }
-//            }
-//        }
+              MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?");
+            String manh = this.txtMaNhanVien.getText();
+            try {
+                dao.delete(manh);
+                this.fillTable();
+             this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }
     }
     private void clearForm() {
 //        NhanVien nv = new NhanVien();
@@ -1027,6 +1029,7 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         nv.setHoTen(txtHoTen.getText());
         nv.setMatKhau(new String(txtMatKhau.getPassword()));
 //        nv.setXacNhanMatKhau(new String(txtXacNhanMatKhau.getPassword()));
+nv.setEmail(this.txtEmail.getText());
          int gender = -1;
     if (this.rdoNam.isSelected()) {
         gender = 0;
@@ -1110,4 +1113,23 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
 //    rdoNhanVien.setSelected(false);
 //    rdoQuanLy.setSelected(false);
     }
+     private void timKiem(){
+    DefaultTableModel model = (DefaultTableModel) this.tblNhanVien.getModel();
+    model.setRowCount(0); // Clear the table
+
+    String keyword = txtTimKiem.getText(); // Get the search keyword
+    List<NhanVien> list = dao.selectByName(keyword); // Assuming you have a method to search by name
+
+    for (NhanVien nv : list) {
+        model.addRow(new Object[]{
+            nv.getMaNhanVien(),
+            nv.getHoTen(),
+            nv.getMatKhau(),
+            nv.getEmail(),
+            nv.getGioiTinh(),
+            nv.getVaiTro()
+        });
+    }
+}
+
 }
