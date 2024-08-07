@@ -99,4 +99,21 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
     public List<HoaDon> selectByKeyword(String keyword) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    
+    public List<Integer> selectYears() {
+        String sql="SELECT DISTINCT year(NgayMua) Year FROM HoaDon ORDER BY Year DESC";
+        List<Integer> list=new ArrayList<>();
+        try {
+           ResultSet rs = XJdbc.query(sql);
+           while(rs.next()){
+                 list.add(rs.getInt(1));
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } 
+        catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
