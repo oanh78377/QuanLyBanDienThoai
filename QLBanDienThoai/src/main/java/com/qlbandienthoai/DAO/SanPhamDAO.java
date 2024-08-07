@@ -29,7 +29,7 @@ public class SanPhamDAO {
     // Method to retrieve all products with brand names
     public List<SanPham> selectAll() {
         List<SanPham> list = new ArrayList<>();
-        String sql = "SELECT sp.MaSanPham, sp.TenSanPham, hdt.TenHangDienThoai AS TenHangDienThoai, sp.MoTa, sp.SoLuong, sp.Gia "
+        String sql = "SELECT sp.MaSanPham, sp.TenSanPham, hdt.TenHangDienThoai AS TenHangDienThoai, sp.MoTa, sp.SoLuong, sp.Gia, sp.Hinh "
                 + "FROM SANPHAM sp "
                 + "JOIN HANGDIENTHOAI hdt ON sp.MaHangDienThoai = hdt.MaHangDienThoai";
         try {
@@ -43,6 +43,8 @@ public class SanPhamDAO {
 // Set brand name
                 sanPham.setQuatity(rs.getInt("SoLuong"));
                 sanPham.setPrice(rs.getInt("Gia"));
+                                sanPham.setImage(rs.getString("Hinh"));
+
                 list.add(sanPham);
             }
         } catch (SQLException e) {

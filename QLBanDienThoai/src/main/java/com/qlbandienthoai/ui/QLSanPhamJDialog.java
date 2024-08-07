@@ -48,7 +48,7 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
         jSeparator4 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableSanPham = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -67,9 +67,10 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
         jTextField5 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtNote = new javax.swing.JTextArea();
         jLabel12 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
+        txtImage = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
@@ -105,7 +106,7 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Quản lý");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -116,7 +117,12 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
                 "Hình", "Tên điện thoại", "Hãng điện thoại", "Mô tả", "Số lượng", "Giá"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableSanPhamMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableSanPham);
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -142,7 +148,6 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/2_a.png"))); // NOI18N
 
         jLabel2.setText("Hình");
 
@@ -150,15 +155,15 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
 
         jLabel5.setText("Tên sản phẩm");
 
-        jLabel8.setText("Mã hãng điện thoại");
+        jLabel8.setText("Tên hãng điện thoại");
 
         jLabel9.setText("Số lượng");
 
         jLabel11.setText("Mô tả");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtNote.setColumns(20);
+        txtNote.setRows(5);
+        jScrollPane2.setViewportView(txtNote);
 
         jLabel12.setText("Giá");
 
@@ -168,9 +173,12 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtImage))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(147, 147, 147)
@@ -202,12 +210,14 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImage)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel11)
@@ -254,6 +264,11 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/add (2).png"))); // NOI18N
         jButton6.setText("Thêm");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(0, 0, 102));
         jButton7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -608,6 +623,14 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
+    private void tableSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableSanPhamMouseClicked
+this.mappingData();        // TODO add your handling code here:
+    }//GEN-LAST:event_tableSanPhamMouseClicked
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+this.insert();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -692,20 +715,21 @@ public class QLSanPhamJDialog extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTable tableSanPham;
+    private javax.swing.JTextField txtImage;
+    private javax.swing.JTextArea txtNote;
     // End of variables declaration//GEN-END:variables
 SanPhamDAO dao = new SanPhamDAO();
     int row = -1;
 
     void fillTable() {
-        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel(); // Assuming tableSanPham is the JTable for displaying products
+        DefaultTableModel model = (DefaultTableModel) this.tableSanPham.getModel(); // Assuming tableSanPham is the JTable for displaying products
         model.setRowCount(0); // Clear existing rows
 
         try {
@@ -720,7 +744,8 @@ SanPhamDAO dao = new SanPhamDAO();
                     sp.getNameType(), // Brand Name
                     sp.getNote(),
                     sp.getQuatity(), // Quantity
-                    sp.getPrice() // Price
+                    sp.getPrice(), // Price
+                    sp.getImage()
                 };
 
                 // Add the row to the table model
@@ -744,30 +769,31 @@ SanPhamDAO dao = new SanPhamDAO();
     }
 
     void mappingData() {
-        int selectedRow = this.jTable1.getSelectedRow();
+        int selectedRow = this.tableSanPham.getSelectedRow();
         
         if (selectedRow >= 0) { // Ensure a row is selected
             // Map each column to the respective text field or data type
-            this.jTextField1.setText(this.jTable1.getValueAt(selectedRow, 0).toString());
-            this.jTextField2.setText(this.jTable1.getValueAt(selectedRow, 1).toString());
-            this.jTextField4.setText(this.jTable1.getValueAt(selectedRow, 2).toString());
-            this.jTextPane1.setText(this.jTable1.getValueAt(selectedRow, 3).toString());
+            this.jTextField1.setText(this.tableSanPham.getValueAt(selectedRow, 0).toString());
+            this.jTextField2.setText(this.tableSanPham.getValueAt(selectedRow, 1).toString());
+            this.jTextField4.setText(this.tableSanPham.getValueAt(selectedRow, 2).toString());
+            this.txtNote.setText(this.tableSanPham.getValueAt(selectedRow, 3).toString());
             // Convert the quantity to an integer and set it
             try {
-                int quantity = Integer.parseInt(this.jTable1.getValueAt(selectedRow, 4).toString());
+                int quantity = Integer.parseInt(this.tableSanPham.getValueAt(selectedRow, 4).toString());
                 this.jTextField5.setText(String.valueOf(quantity));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 MsgBox.alert(this, "Lỗi dữ liệu số lượng!"); // Handle parsing error
             }
             try {
-                int price = Integer.parseInt(this.jTable1.getValueAt(selectedRow, 5).toString());
+                int price = Integer.parseInt(this.tableSanPham.getValueAt(selectedRow, 5).toString());
                 this.jTextField6.setText(String.valueOf(price));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 MsgBox.alert(this, "Lỗi dữ liệu số lượng!"); // Handle parsing error
             }
-            // If `txtQuantity` is a `JTextField`, you need to use `setText()` as it is a `String`
+            this.txtImage.setText(this.tableSanPham.getValueAt(selectedRow, 6).toString());
+           // If `txtQuantity` is a `JTextField`, you need to use `setText()` as it is a `String`
         } else {
             MsgBox.alert(this, "Vui lòng chọn một sản phẩm để chỉnh sửa!");
         }
@@ -778,7 +804,7 @@ SanPhamDAO dao = new SanPhamDAO();
         sp.setCode(this.jTextField1.getText());
         sp.setName(this.jTextField2.getText());
         sp.setNameType(this.jTextField4.getText());
-        sp.setNote(this.jTextPane1.getText());
+        sp.setNote(this.txtNote.getText());
         
         try {
             sp.setQuatity(Integer.parseInt(this.jTextField5.getText()));
