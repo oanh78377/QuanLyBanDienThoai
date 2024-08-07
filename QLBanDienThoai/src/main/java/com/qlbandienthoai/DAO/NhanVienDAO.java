@@ -92,6 +92,9 @@ public class NhanVienDAO extends EduSysDAO<NhanVien, String>{
         }
         return list;
     }
-
+  public List<NhanVien> selectByName(String keyword) {
+        String sql = "SELECT * FROM NhanVien WHERE HoTen LIKE ?";
+        return selectBySql(sql, "%" + keyword + "%");
+    }
    
 }
