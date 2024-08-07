@@ -915,7 +915,7 @@ void fillTable() {
         }
 }
 void delete(){
-    MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?");
+    MsgBox.confirm(this, "Bạn thực sự muốn xóa khách hàng này?");
             String manh = this.txtCode.getText();
             try {
                 dao.delete(manh);

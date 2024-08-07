@@ -918,7 +918,7 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
        
     }
     void delete(){
-              MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?");
+              MsgBox.confirm(this, "Bạn thực sự muốn xóa nhân viên này?");
             String manh = this.txtMaNhanVien.getText();
             try {
                 dao.delete(manh);

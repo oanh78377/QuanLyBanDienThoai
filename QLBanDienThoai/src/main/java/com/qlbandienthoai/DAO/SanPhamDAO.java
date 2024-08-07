@@ -25,11 +25,41 @@ public class SanPhamDAO {
                    model.getImage()
                    );
     }
+      
+    public void update(SanPham model) {
+        String sql="UPDATE SanPham SET TenSanPham=?, MaHangDienThoai=?, MoTa=?, SoLuong=?, Gia=?, Hinh=? WHERE MaSanPham=?";
+        XJdbc.update(sql, 
+                model.getName(),
+                    model.getNameType(),
+                    model.getNote(),
+                    model.getQuatity(),
+                    model.getPrice(),
+                   model.getImage(),
+                model.getCode());
+    }  
+      
+     public void delete(String MaCode) {
+        String sql="DELETE FROM SanPham WHERE MaSanPham=?";
+        XJdbc.update(sql, MaCode);
+    }  
+      
+      
+      
+      
+       public List<SanPham> selectByName(String keyword) {
+        String sql = "SELECT * FROM SanPham WHERE TenSanPham LIKE ?";
+        return selectBySql(sql, "%" + keyword + "%");
+    }
+      
+      
+      
+      
+      
 
     // Method to retrieve all products with brand names
     public List<SanPham> selectAll() {
         List<SanPham> list = new ArrayList<>();
-        String sql = "SELECT sp.MaSanPham, sp.TenSanPham, hdt.TenHangDienThoai AS TenHangDienThoai, sp.MoTa, sp.SoLuong, sp.Gia, sp.Hinh "
+        String sql = "SELECT sp.MaSanPham, sp.TenSanPham, hdt.TenHangDienThoai, sp.MoTa, sp.SoLuong, sp.Gia, sp.Hinh "
                 + "FROM SANPHAM sp "
                 + "JOIN HANGDIENTHOAI hdt ON sp.MaHangDienThoai = hdt.MaHangDienThoai";
         try {
@@ -51,5 +81,42 @@ public class SanPhamDAO {
             e.printStackTrace();
         }
         return list;
+    }
+    
+    
+    protected List<SanPham> selectBySql(String sql, Object... args) {
+        List<SanPham> list=new ArrayList<>();
+        try {
+            ResultSet rs = null;
+            try {
+                rs = XJdbc.query(sql, args);
+                while(rs.next()){
+                    SanPham entity=new SanPham();
+                    entity.setCode(rs.getString("MaSanPham"));
+                    entity.setName(rs.getString("TenSanPham"));
+                    entity.setNameType(rs.getString("MaHangDienThoai"));
+                    entity.setNote(rs.getString("MoTa"));
+                    entity.setQuatity(rs.getInt("SoLuong"));
+                    entity.setPrice(rs.getInt("Gia"));
+                    entity.setImage(rs.getString("Hinh"));
+                    list.add(entity);
+                }
+            } 
+            finally{
+                if(rs != null)
+                    rs.getStatement().getConnection().close();
+            }
+        } 
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+        return list;
+    }
+
+    public SanPham selectById(String MaSanPham) {
+        String sql="SELECT * FROM SANPHAM WHERE MaSanPham=?";
+        List<SanPham> list = this.selectBySql(sql, MaSanPham);
+        return list.size() > 0 ? list.get(0) : null;
     }
 }
