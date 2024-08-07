@@ -6,6 +6,7 @@ package com.qlbandienthoai.DAO;
 
 import com.qlbandienthoai.entity.HangDienThoai;
 import com.qlbandienthoai.utils.XJdbc;
+import com.sun.jdi.connect.spi.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,5 +79,8 @@ public class HangDienThoaiDAO extends EduSysDAO<HangDienThoai, String>{
         }
         return list;
     }
-    
+    public List<HangDienThoai> selectByName(String keyword) {
+    String sql = "SELECT * FROM HangDienThoai WHERE TenHangDienThoai LIKE ?";
+    return selectBySql(sql, "%" + keyword + "%");
+}
 }
