@@ -5,6 +5,7 @@
 package com.qlbandienthoai.ui;
 
 import com.qlbandienthoai.DAO.KhachHangDAO;
+import com.qlbandienthoai.entity.HangDienThoai;
 import com.qlbandienthoai.entity.KhachHang;
 import com.qlbandienthoai.utils.MsgBox;
 import com.qlbandienthoai.utils.XDate;
@@ -49,7 +50,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtTimKiem = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableKhachHang = new javax.swing.JTable();
@@ -108,13 +109,23 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Tìm kiếm");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/Search.png"))); // NOI18N
         jButton1.setText("Tìm kiếm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         tableKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,7 +157,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(33, 33, 33)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -159,7 +170,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -285,28 +296,53 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         jButton2.setBackground(new java.awt.Color(0, 0, 102));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("<<");
+        jButton2.setText("|<");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(0, 0, 102));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("<<");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(0, 0, 102));
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText(">>");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(0, 0, 102));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText(">|");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         btnEdit.setBackground(new java.awt.Color(0, 0, 102));
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/qlbandienthoai/Icon/pen.png"))); // NOI18N
         btnEdit.setText("Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(0, 0, 102));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -689,6 +725,41 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         this.delete();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.first();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.prev();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.next();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        this.last();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        // TODO add your handling code here:
+        this.timKiem();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        this.update();
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.timKiem();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -775,7 +846,6 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableKhachHang;
     private javax.swing.JTextPane tpAdress;
     private javax.swing.JTextField txtBirth;
@@ -783,6 +853,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtNumber;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
  KhachHangDAO dao = new KhachHangDAO();
  int row = -1;
@@ -926,4 +997,79 @@ void delete(){
         this.txtNumber.setText("");
     }
    }
+     void first() {
+        this.row = 0;
+        this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        this.tableKhachHang.scrollRectToVisible(this.tableKhachHang.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tableKhachHang.setRowSelectionInterval(this.row, this.row);
+    }
+
+    void prev() {
+        if(this.row > 0){
+            this.row--;
+            this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+        this.tableKhachHang.scrollRectToVisible(this.tableKhachHang.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tableKhachHang.setRowSelectionInterval(this.row, this.row);
+        }
+    }
+
+    void next() {
+        if(this.row < this.tableKhachHang.getRowCount() - 1){
+            this.row++;
+            this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+        this.tableKhachHang.scrollRectToVisible(this.tableKhachHang.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tableKhachHang.setRowSelectionInterval(this.row, this.row);
+        }
+    }
+
+    void last() {
+        this.row = this.tableKhachHang.getRowCount() - 1;
+        this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        this.tableKhachHang.scrollRectToVisible(this.tableKhachHang.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tableKhachHang.setRowSelectionInterval(this.row, this.row);
+    }
+    private void timKiem(){
+    DefaultTableModel model = (DefaultTableModel) this.tableKhachHang.getModel();
+    model.setRowCount(0); // Clear the table
+
+    String keyword = txtTimKiem.getText(); // Get the search keyword
+    List<KhachHang> list = dao.selectByName(keyword); // Assuming you have a method to search by name
+
+    for (KhachHang kh : list) {
+        model.addRow(new Object[]{
+            kh.getCode(),
+            kh.getName(),
+            kh.getPhone(),
+            kh.getAdress(),
+            kh.getBrith(),
+            kh.getGender(),
+            kh.getNumber()
+        });
+    }
+}
+     void update(){
+        KhachHang model = getForm();
+        try {
+            dao.update(model);
+            this.fillTable();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } 
+        catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+            e.printStackTrace();  // Log the error to the console for debugging
+}
+
+    }
 }
