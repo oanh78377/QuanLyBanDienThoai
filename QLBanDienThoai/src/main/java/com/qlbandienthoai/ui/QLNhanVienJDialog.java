@@ -9,6 +9,8 @@ import com.qlbandienthoai.entity.NhanVien;
 import com.qlbandienthoai.utils.Auth;
 import com.qlbandienthoai.utils.MsgBox;
 import java.util.List;
+import java.util.jar.Attributes;
+import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -632,24 +634,23 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
         txtMatKhau.setText(tblNhanVien.getValueAt(viTri, 2).toString());
         txtXacNhanMatKhau.setText(tblNhanVien.getValueAt(viTri, 2).toString());
         txtEmail.setText(tblNhanVien.getValueAt(viTri, 3).toString());
-         int gender = Integer.parseInt(this.tblNhanVien.getValueAt(viTri, 4).toString());
-        if (gender == 0) {
-            this.rdoNam.setSelected(true);
-            this.rdoNu.setSelected(false);
-        } else if (gender == 1) {
-            this.rdoNam.setSelected(false);
-            this.rdoNu.setSelected(true);
+        String gioiTinh = tblNhanVien.getValueAt(viTri, 4).toString();
+        if ("Nam".equals(gioiTinh)) {
+            rdoNam.setSelected(true);
+            rdoNu.setSelected(false);
+        } else if ("Nữ".equals(gioiTinh)) {
+            rdoNam.setSelected(false);
+            rdoNu.setSelected(true);
         }
         
-        int vaiTro = Integer.parseInt(this.tblNhanVien.getValueAt(viTri, 5).toString());
-        if (vaiTro == 0) {
+         String vaiTro = tblNhanVien.getValueAt(viTri, 5).toString();
+        if ("Quản lý".equals(vaiTro)) {
             this.rdoQuanLy.setSelected(true);
             this.rdoNhanVien.setSelected(false);
-        } else if (gender == 1) {
+        } else if ("Nhân viên".equals(vaiTro)) {
             this.rdoQuanLy.setSelected(false);
             this.rdoNhanVien.setSelected(true);
         }
-        
         
         
         
@@ -849,14 +850,29 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtXacNhanMatKhau;
     // End of variables declaration//GEN-END:variables
 
-    NhanVienDAO dao = new NhanVienDAO();
-    int row = -1;
-    void init(){
-        setLocationRelativeTo(null); // đưa cửa sổ ra giữa màn hình
-        this.fillTable(); // đổ dữ liệu nhân viên vào bảng
-        this.row = -1;
-        this.updateStatus(); // cập nhật trạng thái form
-    }
+private ButtonGroup genderGroup;
+private ButtonGroup roleGroup;
+
+NhanVienDAO dao = new NhanVienDAO();
+int row = -1;
+
+void init() {
+    setLocationRelativeTo(null); // Center the window
+    genderGroup = new ButtonGroup();
+    roleGroup = new ButtonGroup();
+    
+    // Add gender radio buttons to the group
+    genderGroup.add(rdoNam);
+    genderGroup.add(rdoNu);
+    
+    // Add role radio buttons to the group
+    roleGroup.add(rdoQuanLy);
+    roleGroup.add(rdoNhanVien);
+    
+    fillTable(); // Load employee data into the table
+    row = -1;
+    updateStatus(); // Update the form's status
+}
     void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
         model.setRowCount(0);
@@ -868,8 +884,8 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
                     nv.getHoTen(),
                     nv.getMatKhau(),
                     nv.getEmail(),
-                    nv.getGioiTinh(),
-                    nv.getVaiTro()
+                   nv.getGioiTinh()==0 ?"Nam":"Nữ",
+                    nv.getVaiTro() == 0 ?"Quản lý":"Nhân viên"
                 };
                 model.addRow(row);
             }
@@ -918,7 +934,7 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
        
     }
     void delete(){
-              MsgBox.confirm(this, "Bạn thực sự muốn xóa nhân viên này?");
+              MsgBox.confirm(this, "Bạn thực sự muốn xóa không?");
             String manh = this.txtMaNhanVien.getText();
             try {
                 dao.delete(manh);
@@ -1023,30 +1039,73 @@ public class QLNhanVienJDialog extends javax.swing.JDialog {
 //        btnLast.setEnabled(!edit && !last);
     }
 
-    private NhanVien getForm() {
-        NhanVien nv = new NhanVien();
-        nv.setMaNhanVien(txtMaNhanVien.getText());
-        nv.setHoTen(txtHoTen.getText());
-        nv.setMatKhau(new String(txtMatKhau.getPassword()));
-//        nv.setXacNhanMatKhau(new String(txtXacNhanMatKhau.getPassword()));
-nv.setEmail(this.txtEmail.getText());
-         int gender = -1;
+   private NhanVien getForm() {
+    // Validate MaNhanVien
+    String maNhanVien = txtMaNhanVien.getText().trim();
+    if (maNhanVien.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền mã nhân viên.");
+        return null;
+    }
+ if (!maNhanVien.startsWith("NV")) {
+        MsgBox.alert(this, "Mã nhân viên phải bắt đầu bằng 'NV'!");
+        txtMaNhanVien.requestFocus();
+        return null;
+    }
+    // Validate HoTen
+    String hoTen = txtHoTen.getText().trim();
+    if (hoTen.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền họ tên.");
+        return null;
+    }
+
+    // Validate MatKhau
+    String matKhau = new String(txtMatKhau.getPassword()).trim();
+    if (matKhau.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền mật khẩu.");
+        return null;
+    }
+
+    // Validate Email
+    String email = txtEmail.getText().trim();
+    if (email.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền email.");
+        return null;
+    }
+
+    // Validate gender radio buttons
+    int gender = -1;
     if (this.rdoNam.isSelected()) {
         gender = 0;
     } else if (this.rdoNu.isSelected()) {
         gender = 1;
+    } else {
+        MsgBox.alert(this, "Vui lòng chọn giới tính.");
+        return null;
     }
-    
+
+    // Validate role radio buttons
     int vaiTro = -1;
     if (this.rdoQuanLy.isSelected()) {
         vaiTro = 0;
     } else if (this.rdoNhanVien.isSelected()) {
         vaiTro = 1;
+    } else {
+        MsgBox.alert(this, "Vui lòng chọn vai trò.");
+        return null;
     }
 
-//        nv.setVaiTro(rdoQuanLy.isSelected());
-        return nv;
-    }
+    // Create NhanVien object and set properties
+    NhanVien nv = new NhanVien();
+    nv.setMaNhanVien(maNhanVien);
+    nv.setHoTen(hoTen);
+    nv.setMatKhau(matKhau);
+    nv.setEmail(email);
+    nv.setGioiTinh(gender);
+    nv.setVaiTro(vaiTro);
+
+    return nv;
+}
+
 
     private void setForm(NhanVien nv) {
         txtMaNhanVien.setText(nv.getMaNhanVien());

@@ -12,6 +12,7 @@ import com.qlbandienthoai.utils.XDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,6 +29,7 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.fillTable();
+        this.init();
     }
 
     QLKhachHangJDialog() {
@@ -855,15 +857,27 @@ public class QLKhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
- KhachHangDAO dao = new KhachHangDAO();
- int row = -1;
-    private void edit() {
-        String manv = (String)this.tableKhachHang.getValueAt(this.row, 0);
-        KhachHang nv = dao.selectById(manv);
-        this.setForm(nv);
-//        tabs.setSelectedIndex(0);
-//        this.updateStatus();
-    }
+ private ButtonGroup genderGroup;
+private ButtonGroup roleGroup;
+
+KhachHangDAO dao = new KhachHangDAO();
+int row = -1;
+
+void init() {
+    setLocationRelativeTo(null); // Center the window
+    genderGroup = new ButtonGroup();
+    roleGroup = new ButtonGroup();
+    
+    // Add gender radio buttons to the group
+    genderGroup.add(ckMale);
+    genderGroup.add(ckfeMale);
+    
+    // Add role radio buttons to the group
+    
+    fillTable(); // Load employee data into the table
+    row = -1;
+//    updateStatus(); // Update the form's status
+}
  private void setForm(KhachHang kh) {
        this.txtCode.setText(kh.getCode());
         this.txtName.setText(kh.getName());
@@ -891,7 +905,7 @@ void fillTable() {
                     kh.getName(),
                     kh.getPhone(),
                     kh.getAdress(),
-                    kh.getGender(),
+                    kh.getGender() == 0 ? "Nam":"Nữ",
                     kh.getBrith(),
                     kh.getNumber()
                 };
@@ -927,21 +941,107 @@ void delete(){
                 MsgBox.alert(this, "Xóa thất bại!");
             }            
     }
-  public KhachHang getForm() {
-    KhachHang kh = new KhachHang() ;
-        kh.setCode(this.txtCode.getText());
-        kh.setName(this.txtName.getText());
-        kh.setPhone(this.txtPhone.getText());
-        kh.setAdress(this.tpAdress.getText());
-        int gender = -1;
-    if (this.ckMale.isSelected()) {
+  public KhachHang getForm() {//getForm khách hàng
+    KhachHang kh = new KhachHang();
+
+    // Validate Code
+    String code = txtCode.getText().trim();
+    if (code.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền mã khách hàng.");
+        txtCode.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    kh.setCode(code);
+    
+    if (!code.startsWith("KH")) {
+        MsgBox.alert(this, "Mã nhân viên phải bắt đầu bằng 'KH'!");
+        txtCode.requestFocus();
+        return null;
+    }
+
+    // Validate Name
+    String name = txtName.getText().trim();
+    if (name.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền tên khách hàng.");
+        txtName.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    if (name.matches(".*\\d.*")) { // Checks if the name contains any digits
+        MsgBox.alert(this, "Tên khách hàng không được chứa số.");
+        txtName.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    kh.setName(name);
+
+    // Validate Phone
+    String phone = txtPhone.getText().trim();
+    if (phone.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền số điện thoại.");
+        txtPhone.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    if (!phone.matches("0\\d{9}")) { // Ensures the phone number starts with 0 and has 10 digits
+        MsgBox.alert(this, "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại bắt đầu bằng 0 và có 10 chữ số.");
+        txtPhone.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    kh.setPhone(phone);
+
+    // Validate Address
+    String address = tpAdress.getText().trim();
+    if (address.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền địa chỉ.");
+        tpAdress.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    kh.setAdress(address);
+
+    // Validate Gender
+    int gender = -1;
+    if (ckMale.isSelected()) {
         gender = 0;
-    } else if (this.ckfeMale.isSelected()) {
+    } else if (ckfeMale.isSelected()) {
         gender = 1;
+    } else {
+        MsgBox.alert(this, "Vui lòng chọn giới tính.");
+        return null; // Return null to indicate validation failure
     }
     kh.setGender(gender);
-        kh.setBrith(XDate.toDate(this.txtBirth.getText(), "yyyy-MM-dd"));
-        kh.setNumber(Integer.valueOf(this.txtNumber.getText()));
+
+    // Validate Birth Date
+    String birthDateStr = txtBirth.getText().trim();
+    if (birthDateStr.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền ngày sinh.");
+        txtBirth.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    try {
+        kh.setBrith(XDate.toDate(birthDateStr, "yyyy-MM-dd"));
+    } catch (Exception e) {
+        MsgBox.alert(this, "Ngày sinh không hợp lệ. Định dạng ngày phải là yyyy-MM-dd.");
+        txtBirth.requestFocus();
+        return null; // Return null to indicate validation failure
+    }// Validate Number
+    String numberStr = txtNumber.getText().trim();
+    if (numberStr.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền số lượng.");
+        txtNumber.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    try {
+        int number = Integer.valueOf(numberStr);
+        if (number < 0) {
+            MsgBox.alert(this, "Số lượng không được là số âm.");
+            txtNumber.requestFocus();
+            return null; // Return null to indicate validation failure
+        }
+        kh.setNumber(number);
+    } catch (NumberFormatException e) {
+        MsgBox.alert(this, "Số lượng không hợp lệ. Vui lòng nhập một số nguyên.");
+        txtNumber.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+ // If all validations pass, return the KhachHang object
         return kh;
         
 }
@@ -969,11 +1069,11 @@ void delete(){
         this.tpAdress.setText(this.tableKhachHang.getValueAt(selectedRow, 3).toString());
 
         // Handle gender
-        int gender = Integer.parseInt(this.tableKhachHang.getValueAt(selectedRow, 4).toString());
-        if (gender == 1) {
+       String gioiTinh = this.tableKhachHang.getValueAt(selectedRow, 4).toString();
+        if ("Nam".equals(gioiTinh)) {
             this.ckMale.setSelected(true);
             this.ckfeMale.setSelected(false);
-        } else if (gender == 0) {
+        } else if ("Nữ".equals(gioiTinh)) {
             this.ckMale.setSelected(false);
             this.ckfeMale.setSelected(true);
         }
@@ -1070,6 +1170,15 @@ void delete(){
             MsgBox.alert(this, "Cập nhật thất bại!");
             e.printStackTrace();  // Log the error to the console for debugging
 }
+
+    }
+      private void edit() {
+        String manv = (String) tableKhachHang.getValueAt(this.row, 0);
+        KhachHang nv = dao.selectById(manv);
+        this.setForm(nv);
+//        tabs.setSelectedIndex(0);
+
+//        this.updateStatus();
 
     }
 }

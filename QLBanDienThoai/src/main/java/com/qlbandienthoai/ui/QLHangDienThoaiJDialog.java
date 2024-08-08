@@ -917,12 +917,42 @@ MsgBox.confirm(this, "Bạn có muốn xóa hay không?");
 //        btnLast.setEnabled(edit && !last);
     }
 
-    private HangDienThoai getForm() {
-        HangDienThoai hdt = new HangDienThoai();
-        hdt.setMaHangDienThoai(txtMaHangDienThoai.getText());
-        hdt.setTenHangDienThoai(txtTenHangDienThoai.getText());
-        return hdt;
+   private HangDienThoai getForm() { //Hãng điện thoại
+    String maHangDienThoai = txtMaHangDienThoai.getText().trim();
+    String tenHangDienThoai = txtTenHangDienThoai.getText().trim();
+
+    // Validate MaHangDienThoai
+    if (maHangDienThoai.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền mã hãng điện thoại.");
+        txtMaHangDienThoai.requestFocus();
+        return null; // Return null to indicate validation failure
     }
+    if (!maHangDienThoai.startsWith("HDT")) {
+        MsgBox.alert(this, "Mã hãng điện thoại phải bắt đầu bằng 'HDT'.");
+        txtMaHangDienThoai.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    
+    // Validate TenHangDienThoai
+    if (tenHangDienThoai.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền tên hãng điện thoại.");
+        txtTenHangDienThoai.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    // Check if TenHangDienThoai contains numbers
+    if (tenHangDienThoai.matches(".*\\d.*")) {
+        MsgBox.alert(this, "Tên hãng điện thoại không được chứa số.");
+        txtTenHangDienThoai.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+
+    // If all validations pass, create and return the HangDienThoai object
+    HangDienThoai hdt = new HangDienThoai();
+    hdt.setMaHangDienThoai(maHangDienThoai);
+    hdt.setTenHangDienThoai(tenHangDienThoai);
+    return hdt;
+}
+
 
     private void setForm(HangDienThoai hdt) {
         txtMaHangDienThoai.setText(hdt.getMaHangDienThoai());
