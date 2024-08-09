@@ -12,34 +12,33 @@ import com.qlbandienthoai.entity.HoaDonChiTiet;
 import com.qlbandienthoai.DAO.HoaDonChiTietDAO;
 import com.qlbandienthoai.utils.Auth;
 import com.qlbandienthoai.utils.MsgBox;
+import com.qlbandienthoai.utils.XDate;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author ADMIN
  */
 public class QLHoaDonJDialog extends javax.swing.JDialog {
-
-    private int row;
-    private HoaDon model;
-    private String mahd;
-
+private static List<HoaDon> KhachHangs = new ArrayList<>();
     /**
      * Creates new form QLHpaDonJDialog
      */
     public QLHoaDonJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        init();
+        
         this.fillTable();
-        this.fillTable1();
         
     }
 
@@ -81,9 +80,6 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblhoadonct = new javax.swing.JTable();
-        jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         btnTimKiem = new javax.swing.JButton();
@@ -224,22 +220,6 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
             }
         });
 
-        tblhoadonct.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "MaHoaDonChiTiet", "MaSanPham", "MaHoaDon", "TrangThai", "SoLuong", "Gia"
-            }
-        ));
-        jScrollPane2.setViewportView(tblhoadonct);
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel13.setText("Hóa Đơn Chi Tiết");
-
         jLabel14.setBackground(new java.awt.Color(0, 0, 102));
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(51, 51, 51));
@@ -271,7 +251,6 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
                 .addGroup(taseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(taseLayout.createSequentialGroup()
                         .addGroup(taseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, taseLayout.createSequentialGroup()
                                 .addComponent(btnFirst, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
@@ -331,10 +310,8 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
                                         .addGap(33, 33, 33)))))
                         .addContainerGap())
                     .addGroup(taseLayout.createSequentialGroup()
-                        .addGroup(taseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel14)
+                        .addGap(0, 764, Short.MAX_VALUE))))
         );
         taseLayout.setVerticalGroup(
             taseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,11 +360,7 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
                             .addComponent(btnXoa)
                             .addComponent(btnMoi)))
                     .addComponent(btnTimKiem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(166, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -617,21 +590,24 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         // TODO add your handling code here:
+        this.timKiem();
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-         this.first();
+        this.first();
+         
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-            this.prev();
+         this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
         this.next();
+       
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
@@ -641,27 +617,27 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-         this.insert(model);
+         this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        this.update(model);
+        this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-         this.delete(mahd);
+         this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-        this.clearForm();
+        this.clear();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-         this.timKiem();
+//         this.timKiem();
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void tblqlhoadonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblqlhoadonMouseClicked
@@ -737,7 +713,7 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
         QLHoaDonJDialog.this.dispose();
         DangNhapJDialog dn = new DangNhapJDialog();
         dn.setVisible(true);
-       
+        
     }//GEN-LAST:event_btnDangXuatActionPerformed
  
     /**
@@ -765,6 +741,20 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(QLHoaDonJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -806,7 +796,6 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel23;
@@ -817,12 +806,10 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPanel tase;
-    private javax.swing.JTable tblhoadonct;
     private javax.swing.JTable tblqlhoadon;
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtgiaban;
@@ -832,295 +819,238 @@ public class QLHoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtngaymua;
     private javax.swing.JTextField txttrangthai;
     // End of variables declaration//GEN-END:variables
-
-    private void first() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-
-
-    private void insert(HoaDon model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private void update(HoaDon model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private void delete(String mahd) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-
-
-
-//    private void importNguoiHocFromExcel(File file) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
-    private javax.swing.JFileChooser fileChooser;
-      HoaDonDAO dao = new HoaDonDAO();
-      HoaDonChiTiet Dao = new HoaDonChiTiet();
-    int Row = -1;
-    
-    void init() {
-        setLocationRelativeTo(null);
-        this.fillTable();
-        this.row = -1;
-        this.updateStatus();
-    }
-        
+   HoaDonDAO dao = new HoaDonDAO();
+    int row = -1;
     void fillTable() {
-        DefaultTableModel model = (DefaultTableModel) tblqlhoadon.getModel();
-        model.setRowCount(0);//don het tat ca cac dong trong bang ve 0 de them moi
+        DefaultTableModel model = (DefaultTableModel) this.tblqlhoadon.getModel(); // Assuming tableSanPham is the JTable for displaying products
+        model.setRowCount(0); // Clear existing rows
+
         try {
-           
-            List<HoaDon> list = dao.selectAll();
-            for (HoaDon nh : list) {
+            HoaDonDAO sanPhamDAO = new HoaDonDAO(); // Instantiate SanPhamDAO
+            List<HoaDon> list = sanPhamDAO.selectAll(); // Get all products
+
+            for (HoaDon sp : list) {
+                // Create a row with product data
                 Object[] row = {
-                    nh.getMaHoaDon(),
-                    nh.getMaKhachHang(),
-                    nh.getMaNhanVien(),
-                    nh.getTrangThai(),
-                    nh.getGiaBan(),
-                    nh.getNgayMua(),
+                    sp.getMaHoaDon(), // Product Code
+                    sp.getMaKhachHang(), // Product Name
+                    sp.getMaNhanVien(), // Brand Name
+                    sp.getTrangThai(),
+                    sp.getGiaBan(), // Quantity
+                    sp.getBrith(), // Price
                 };
+
+                // Add the row to the table model
                 model.addRow(row);
             }
-        } 
-        catch (Exception e) {
-            System.out.print(e.getMessage());
-            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!"); // Show error message
         }
     }
- void fillTable1() {
-        DefaultTableModel model = (DefaultTableModel) tblhoadonct.getModel();
-        model.setRowCount(0);//don het tat ca cac dong trong bang ve 0 de them moi
-        try {
-           
-            List<HoaDonChiTiet> list = Dao.selectAll();
-            for (HoaDonChiTiet nh : list) {
-                Object[] row = {
-                     nh.getMaHoaDonChiTiet(),
-                    nh.getMaSanPham(),
-                    nh.getMaHoaDon(),
-                    nh.getSoLuong(),
-                    nh.getGiaban(),
-                    nh.getNgayMua(),
-                };
-                model.addRow(row);
-            }
-        } 
-        catch (Exception e) {
-            System.out.print(e.getMessage());
-            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!1");
-        }
-    }
-    void insert(){
+
+    void insert() {
         HoaDon model = getForm();
         try {
             dao.insert(model);
             this.fillTable();
-            this.clearForm();
             MsgBox.alert(this, "Thêm mới thành công!");
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             MsgBox.alert(this, "Thêm mới thất bại!");
         }
     }
 
-    void update(){
-       HoaDon model = getForm();
+    void update() {
+        HoaDon model = getForm();
         try {
             dao.update(model);
             this.fillTable();
             MsgBox.alert(this, "Cập nhật thành công!");
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             MsgBox.alert(this, "Cập nhật thất bại!");
+            e.printStackTrace();  // Log the error to the console for debugging
+        }
+
+    }
+
+    void delete() {
+        MsgBox.confirm(this, "Bạn thực sự muốn xóa sản phẩm này?");
+        String manh = this.txtmahoadon.getText();
+        try {
+            dao.delete(manh);
+            this.fillTable();
+            this.clear();
+            MsgBox.alert(this, "Xóa thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Xóa thất bại!");
         }
     }
 
-    void delete(){
-//        if(!Auth.isManager()){
-//           MsgBox.alert(this, "Bạn không có quyền xóa người học!");
-//        }
-//        else if(MsgBox.confirm(this, "Bạn thực sự muốn xóa người học này?")){
-//            String mahd = txtmahoadon.getText();
-//            try {
-//                dao.delete(mahd);
-//                this.fillTable();
-//                this.clearForm();
-//                MsgBox.alert(this, "Xóa thành công!");
-//            } 
-//            catch (Exception e) {
-//                MsgBox.alert(this, "Xóa thất bại!");
-//            }            
-//        }       
-    }
-
-    void clearForm(){
-        HoaDon nh = new HoaDon();
-        nh.setMaNhanVien(Auth.user.getMaNhanVien());
-        nh.setNgayMua((java.sql.Date) new Date(WIDTH));
-        this.setForm(nh);
-    }
-
-    void edit() {
-        String mahd = (String) tblqlhoadon.getValueAt(this.row, 0);
-       HoaDon nh = dao.selectById(mahd);
-        this.setForm(nh);
-        this.updateStatus();
-        tase.setAlignmentX(TOP_ALIGNMENT);
-    }
-
-    void setForm(HoaDon hd){
-        txtmahoadon.setText(hd.getMaHoaDon());
-        txtmakhachhang.setText(hd.getMaKhachHang());
-//        txtngaymua.(XDate(hd.getNgayMua(), "MM/dd/yyyy"));
-        txtmanhanvien.setText(hd.getMaNhanVien());
-        txttrangthai.setText(hd.getTrangThai());
-        txtgiaban.setCaretPosition(hd.getGiaBan());
-    }
-
-    HoaDon getForm() {
-        HoaDon nh = new HoaDon();
-        nh.setMaHoaDon(txtmahoadon.getText());
-        nh.setMaKhachHang(txtmakhachhang.getText());
-//        nh.setNgayMua(XDate(, mahd).toDate(txtngaymua.getText(), "MM/dd/yyyy"));
-        nh.setMaNhanVien(txtmanhanvien.getText());
-        nh.setTrangThai(txttrangthai.getText());
-        nh.setGiaBan(txtgiaban.getBaseline(WIDTH, HEIGHT));
-        nh.setMaHoaDon(Auth.user.getMaNhanVien());
-        return nh;
-    }
-        
-    void fins(){
-        this.row = 0;
-        this.edit();
-    }
-    void prev(){
-        if(this.row > 0){
-            this.row--;
-            this.edit();
-        }
-    }
-    void next(){
-        if(this.row < tblqlhoadon.getRowCount() - 1){
-            this.row++;
-            this.edit();
-        }
-    }
-    void last(){
-         this.row = tblqlhoadon.getRowCount() - 1;
-        this.edit();
-    }
-    
-    void updateStatus(){
-        boolean edit = (this.row >= 0);
-        boolean first = (this.row == 0);
-        boolean last = (this.row == tblqlhoadon.getRowCount() - 1);
-        // Trạng thái form
-        txtmahoadon.setEditable(!edit);
-        btnThem.setEnabled(!edit);
-        btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);
-        
-        // Trạng thái điều hướng
-        btnFirst.setEnabled(edit && !first);
-        btnPrev.setEnabled(edit && !first);
-        btnNext.setEnabled(edit && !last);
-        btnLast.setEnabled(edit && !last);
-    }
-
-    private void timKiem() {
+    public void clear() {
+        this.txtmahoadon.setText("");
+        this.txtmakhachhang.setText("");
+        this.txtmanhanvien.setText("");
+        this.txttrangthai.setText("");
+        this.txtgiaban.setText("");
+        this.txtngaymua.setText("");
         this.fillTable();
-        this.clearForm();
-        this.row = -1;
-        this.updateStatus();
-    }
-    
-    private File chonFileExcelImportNguoiHoc() {
-        File excelFile = null;
-        fileChooser = new JFileChooser();
-                
-        if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-            File file = fileChooser.getSelectedFile();
-            excelFile = XImage.saveExel(file); // lưu hình vào thư mục logos
-            
-        }
-        return excelFile;
     }
 
-    private Object XDate(Date ngayMua, String mMddyyyy) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+     public void mappingData() {
+    int selectedRow = this.tblqlhoadon.getSelectedRow();
+
+    // Ensure a row is selected
+    if (selectedRow < 0) {
+        JOptionPane.showMessageDialog(this, "Please select a row first.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Retrieve and set data from the selected row
+    this.txtmahoadon.setText(this.tblqlhoadon.getValueAt(selectedRow, 0).toString());
+    this.txtmakhachhang.setText(this.tblqlhoadon.getValueAt(selectedRow, 1).toString());
+    this.txtmanhanvien.setText(this.tblqlhoadon.getValueAt(selectedRow, 2).toString());
+
+    // Retrieve and convert the date from the selected row
+    String birthDateStr = this.tblqlhoadon.getValueAt(selectedRow, 5).toString();
+    System.out.println("Original birth date string: " + birthDateStr); // Debugging output
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date birthDate = (Date) sdf.parse(birthDateStr); // Parse the date string
+        String formattedDate = sdf.format(birthDate); // Format the date to the same pattern
+        System.out.println("Formatted birth date: " + formattedDate); // Debugging output
+        this.txtngaymua.setText(formattedDate);
+    } catch (ParseException e) {
+        System.err.println("Error parsing birth date: " + e.getMessage()); // Debugging output
+        this.txtngaymua.setText(""); // Handle exception by clearing the text field
+    }
+
+    // Retrieve and convert the number from the selected row
+    String numberStr = this.tblqlhoadon.getValueAt(selectedRow, 6).toString();
+    try {
+        int number = Integer.parseInt(numberStr);
+        this.txtgiaban.setText(String.valueOf(number));
+    } catch (NumberFormatException e) {
+        this.txtgiaban.setText(""); // Handle exception by clearing the text field
     }
 }
-    
-            
-//    private void importNguoiHocFromExcel(File excelFile){
-//        HoaDon hd = new HoaDon();
-//        try{
-//			FileInputStream file = new FileInputStream(excelFile);
-//
-//			//Create Workbook instance holding reference to .xlsx file
-//			HSSFWorkbook workbook = new HSSFWorkbook(file);
+   public HoaDon getForm() {
+    HoaDon sp = new HoaDon();
+    sp.setMaHoaDon(this.txtmahoadon.getText());
+    sp.setMaKhachHang(this.txtmakhachhang.getText());
+    sp.setMaNhanVien(this.txtmanhanvien.getText());
+    sp.setTrangThai(this.txttrangthai.getText());
 
-			//Get first/desired sheet from the workbook
-//                        HSSFSheet sheet = workbook.getSheetAt(0);
+    String birthDateStr = txtngaymua.getText().trim();
+    if (birthDateStr.isEmpty()) {
+        MsgBox.alert(this, "Vui lòng điền ngày sinh.");
+        txtngaymua.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
+    try {
+        sp.setBrith(XDate.toDate(birthDateStr, "yyyy-MM-dd")); // Ensure `setNgayMua` method exists in HoaDon class
+    } catch (Exception e) {
+        MsgBox.alert(this, "Ngày sinh không hợp lệ. Định dạng ngày phải là yyyy-MM-dd.");
+        txtngaymua.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
 
-			//Iterate through each rows one by one
-//			Iterator<RowFilter> rowIterator = sheet.iterator();
-//                        rowIterator.next();//Skip the header row
-//			while (rowIterator.hasNext()) 
-//			{
-//                            Row row = rowIterator.next();
-//
-//                            HoaDon.setMaNH(row.getCell(0).getStringCellValue());
-//                            HoaDon.setHoTen(row.getCell(1).getStringCellValue());
-//                            if(row.getCell(2).getStringCellValue().equals("Nam"))
-//                                HoaDon.setGioiTinh(true);
-//                            else
-//                                nguoiHoc.setGioiTinh(false);
-//
-//                            nguoiHoc.setNgaySinh(XDate.toDate(row.getCell(3).getStringCellValue(),
-//                                    "MM/dd/yyyy"));
-//                            nguoiHoc.setDienThoai(""+ row.getCell(4).getNumericCellValue());
-//                            nguoiHoc.setEmail(row.getCell(5).getStringCellValue());
-//                            nguoiHoc.setGhiChu("");
-//                            nguoiHoc.setMaNV(Auth.user.getMaNV());
-//                            nguoiHoc.setNgayDK(new Date());
-//                            dao.insert(nguoiHoc);
-//                            System.out.println(nguoiHoc);
-//
-////			}
-//			file.close();
-//                        this.fillTable();
-//		} 
-//		catch (Exception e) 
-//		{
-//			e.printStackTrace();
-//		}
-//    }
+    try {
+        sp.setGiaBan(Integer.parseInt(this.txtgiaban.getText())); // Ensure `setGiaBan` method exists in HoaDon class
+    } catch (NumberFormatException e) {
+        MsgBox.alert(this, "Giá bán không hợp lệ"); // Ensure MsgBox.alert method is correct
+        txtgiaban.requestFocus();
+        return null; // Return null to indicate validation failure
+    }
 
+    // Uncomment and ensure this is used correctly if needed
+    // sp.setImage(this.jLabel1.getText()); // Ensure getText method for jLabel1 returns the expected value
 
+    return sp;
+}
+    void first() {
+        this.row = 0;
+        this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
 
-//    private Object XDate(java.sql.Date ngayMua, String mMddyyyy) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
+    }
 
-//    private HoaDon selectById(String mahd) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
+    void prev() {
+        if (this.row > 0) {
+            this.row--;
+            this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+            this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
 
-//    private static class HSSFSheet {
-//
-//        public HSSFSheet() {
-//        }
+            // Tùy chọn: chọn hàng đầu tiên
+            this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
+        }
+    }
 
-//        private Iterator<RowFilter> iterator() {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
+    void next() {
+        if (this.row < this.tblqlhoadon.getRowCount() - 1) {
+            this.row++;
+            this.edit();
+            // Cuộn bảng đến hàng đầu tiên
+            this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
+
+            // Tùy chọn: chọn hàng đầu tiên
+            this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
+        }
+    }
+
+    void last() {
+        this.row = this.tblqlhoadon.getRowCount() - 1;
+        this.edit();
+        // Cuộn bảng đến hàng đầu tiên
+        this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
+
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
+    }
+
+    private void edit() {
+        String manv = (String) this.tblqlhoadon.getValueAt(this.row, 0);
+        HoaDon nv = dao.selectById(manv);
+        this.setForm(nv);
+//        tabs.setSelectedIndex(0);
+
+//        this.updateStatus();
+    }
+
+    private void setForm(HoaDon nv) {
+        this.txtmahoadon.setText(nv.getMaHoaDon());
+        this.txtmakhachhang.setText(nv.getMaKhachHang());
+        this.txtmanhanvien.setText(nv.getMaNhanVien());
+        this.txttrangthai.setText(nv.getTrangThai());
+        this.txtgiaban.setText(String.valueOf(nv.getGiaBan()));
+        this.txtngaymua.setText(String.valueOf(nv.getBrith()));
+        
+
+    }
+ private void timKiem(){
+    DefaultTableModel model = (DefaultTableModel) this.tblqlhoadon.getModel();
+    model.setRowCount(0); // Clear the table
+
+    String keyword = this.txtTimKiem.getText(); // Get the search keyword
+    List<HoaDon> list = dao.selectByName(keyword); // Assuming you have a method to search by name
+
+    for (HoaDon sp : list) {
+        model.addRow(new Object[]{
+            sp.getMaHoaDon(), // Product Code
+                    sp.getMaNhanVien(), // Product Name
+                    sp.getMaKhachHang(), // Brand Name
+                    sp.getTrangThai(),
+                    sp.getGiaBan(), // Quantity
+                    sp.getBrith(), // Price
+                   
+        });
+    } 
+}
+}
+
 
 

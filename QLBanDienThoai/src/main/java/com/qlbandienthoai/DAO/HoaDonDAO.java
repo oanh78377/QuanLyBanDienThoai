@@ -26,7 +26,7 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
                 model.getMaNhanVien(), 
                 model.getTrangThai(), 
                 model.getGiaBan(),
-                model.getNgayMua());
+                model.getBrith());
     }
 
     
@@ -37,19 +37,19 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
                 model.getMaNhanVien(),
                 model.getTrangThai(),
                 model.getGiaBan(),
-                model.getNgayMua(),
+                model.getBrith(),
                 model.getMaHoaDon());
     
     }
 
     
-    public void delete(String MaNhanVien) {
+    public void delete(String HoaDon) {
         String sql="DELETE FROM HOADON WHERE MaHoaDon=?";
-        XJdbc.update(sql, MaNhanVien);
+        XJdbc.update(sql, HoaDon);
     }
 
     
-    public HoaDon selectById(String MaNhanVien) {
+    public HoaDon selectById(String HoaDon) {
         String sql="SELECT * FROM HOADON WHERE MaHoaDon=?";
         Object[] MaHoaDon = null;
         List<HoaDon> list = this.selectBySql(sql, MaHoaDon);
@@ -76,7 +76,7 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
                     entity.setMaNhanVien(rs.getString("MaNhanVien"));
                     entity.setTrangThai(rs.getString("TrangThai"));
                     entity.setGiaBan(rs.getInt("GiaBan"));
-                    entity.setNgayMua(rs.getDate("NgayMua"));
+                    entity.setBrith(rs.getDate("NgayMua"));
                     list.add(entity);
                 }
             } 
@@ -97,23 +97,14 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
 }
 
     public List<HoaDon> selectByKeyword(String keyword) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    
-    public List<Integer> selectYears() {
-        String sql="SELECT DISTINCT year(NgayMua) Year FROM HoaDon ORDER BY Year DESC";
-        List<Integer> list=new ArrayList<>();
-        try {
-           ResultSet rs = XJdbc.query(sql);
-           while(rs.next()){
-                 list.add(rs.getInt(1));
-            }
-            rs.getStatement().getConnection().close();
-            return list;
-        } 
-        catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
+       String sql = "SELECT * FROM HoaDon WHERE HoTen LIKE ?";
+        return selectBySql(sql, "%" + keyword + "%");    }
+
+  
+
+    public List<HoaDon> selectByName(String keyword) {
+              // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+     String sql = "SELECT * FROM HoaDon WHERE MaHoaDon LIKE ?";
+        return selectBySql(sql, "%" + keyword + "%");
     }
 }

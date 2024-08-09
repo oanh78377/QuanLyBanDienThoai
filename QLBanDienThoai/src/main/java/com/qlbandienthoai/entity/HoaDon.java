@@ -16,18 +16,17 @@ public class HoaDon {
     private String MaNhanVien;
     private String TrangThai;
     private int GiaBan;
-    private Date NgayMua;
+   private java.util.Date brith = new java.util.Date();
 
     public HoaDon() {
     }
 
-    public HoaDon(String MaHoaDon, String MaKhachHang, String MaNhanVien, String TrangThai, int GiaBan, Date NgayMua) {
+    public HoaDon(String MaHoaDon, String MaKhachHang, String MaNhanVien, String TrangThai, int GiaBan) {
         this.MaHoaDon = MaHoaDon;
         this.MaKhachHang = MaKhachHang;
         this.MaNhanVien = MaNhanVien;
         this.TrangThai = TrangThai;
         this.GiaBan = GiaBan;
-        this.NgayMua = NgayMua;
     }
 
     public String getMaHoaDon() {
@@ -70,24 +69,14 @@ public class HoaDon {
         this.GiaBan = GiaBan;
     }
 
-    public Date getNgayMua() {
-        return NgayMua;
+    public java.util.Date getBrith() {
+        return brith;
     }
 
-    public void setNgayMua(Date NgayMua) {
-        this.NgayMua = NgayMua;
+    public void setBrith(java.util.Date brith) {
+        this.brith = brith;
     }
 
-    public void getNgayMua(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public String getNgayMu() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Object setNgayMua() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   
     
 }
