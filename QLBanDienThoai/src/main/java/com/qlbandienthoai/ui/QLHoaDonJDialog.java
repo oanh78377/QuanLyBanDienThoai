@@ -230,6 +230,11 @@ private static List<HoaDon> KhachHangs = new ArrayList<>();
                 txtTimKiemActionPerformed(evt);
             }
         });
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
 
         btnTimKiem.setBackground(new java.awt.Color(0, 0, 102));
         btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -715,6 +720,11 @@ private static List<HoaDon> KhachHangs = new ArrayList<>();
         dn.setVisible(true);
         
     }//GEN-LAST:event_btnDangXuatActionPerformed
+
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        // TODO add your handling code here:
+        this.timKiem();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
  
     /**
      * @param args the command line arguments
@@ -973,49 +983,49 @@ private static List<HoaDon> KhachHangs = new ArrayList<>();
         this.edit();
         // Cuộn bảng đến hàng đầu tiên
         this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
-
+        
         // Tùy chọn: chọn hàng đầu tiên
         this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
     }
 
     void prev() {
-        if (this.row > 0) {
+        if(this.row > 0){
             this.row--;
             this.edit();
-            // Cuộn bảng đến hàng đầu tiên
-            this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
-
-            // Tùy chọn: chọn hàng đầu tiên
-            this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
+           // Cuộn bảng đến hàng đầu tiên
+        this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
         }
     }
 
     void next() {
-        if (this.row < this.tblqlhoadon.getRowCount() - 1) {
+        if(this.row < this.tblqlhoadon.getRowCount() - 1){
             this.row++;
             this.edit();
-            // Cuộn bảng đến hàng đầu tiên
-            this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
-
-            // Tùy chọn: chọn hàng đầu tiên
-            this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
+          // Cuộn bảng đến hàng đầu tiên
+        this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
+        
+        // Tùy chọn: chọn hàng đầu tiên
+        this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
         }
     }
 
     void last() {
         this.row = this.tblqlhoadon.getRowCount() - 1;
         this.edit();
-        // Cuộn bảng đến hàng đầu tiên
+       // Cuộn bảng đến hàng đầu tiên
         this.tblqlhoadon.scrollRectToVisible(this.tblqlhoadon.getCellRect(this.row, 0, true));
-
+        
         // Tùy chọn: chọn hàng đầu tiên
         this.tblqlhoadon.setRowSelectionInterval(this.row, this.row);
     }
 
     private void edit() {
-        String manv = (String) this.tblqlhoadon.getValueAt(this.row, 0);
-        HoaDon nv = dao.selectById(manv);
-        this.setForm(nv);
+        String mahd = (String) this.tblqlhoadon.getValueAt(this.row, 0);
+        HoaDon hd = dao.selectById(mahd);
+        this.setForm(hd);
 //        tabs.setSelectedIndex(0);
 
 //        this.updateStatus();

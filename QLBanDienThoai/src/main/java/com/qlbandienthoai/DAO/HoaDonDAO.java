@@ -49,13 +49,13 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
     }
 
     
-    public HoaDon selectById(String HoaDon) {
-        String sql="SELECT * FROM HOADON WHERE MaHoaDon=?";
-        Object[] MaHoaDon = null;
-        List<HoaDon> list = this.selectBySql(sql, MaHoaDon);
+    public HoaDon selectById(String MaKhachHang) {
+        String sql = "SELECT * FROM HOADON WHERE MaHoaDon=?";
+        List<HoaDon> list = this.selectBySql(sql, MaKhachHang);
         return list.size() > 0 ? list.get(0) : null;
     }
-
+    
+ 
     
     public List<HoaDon> selectAll() {
         String sql="SELECT * FROM HOADON";
@@ -106,5 +106,9 @@ public class HoaDonDAO extends EduSysDAO<HoaDon, String>{
               // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
      String sql = "SELECT * FROM HoaDon WHERE MaHoaDon LIKE ?";
         return selectBySql(sql, "%" + keyword + "%");
+    }
+
+    public List<Integer> selectYears() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
